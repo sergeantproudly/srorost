@@ -1,0 +1,34 @@
+<div class="section lightgray">
+			<div id="bl-feedback">
+				<div class="holder">
+					<h2><%TITLE%></h2>
+
+					<div class="manager">
+						<div class="photo">
+							<img src="<%PHOTO%>" alt="<%ALT%>" title="<%ALT%>">
+						</div>
+						<div class="info">
+							<div class="intro"><%INTRO%></div>
+							<div class="desc"><%DESCRIPTION%></div>
+						</div>
+					</div>
+
+					<form action="<%ACTION%>" method="post" class="form" data-submit="sendFeedback">
+						<div class="flex">
+							<div class="col-l">
+								<input type="text" name="name" maxlength="255" value="" placeholder="Имя">
+								<input type="tel" name="tel" maxlength="255" value="" placeholder="Телефон" data-mask="+7 999 999-99-99">
+							</div>
+							<div class="col-r">
+								<textarea name="text" placeholder="Вопрос"></textarea>
+							</div>
+						</div>
+						<div class="flex scd">
+							<div class="cb-line"><input type="checkbox" name="agree" checked="checked" id="<%ID%>-agree"><label for="<%ID%>-agree">Я согласен (а) на обработку контактных данных</label></div>
+							<div class="btn-line"><input type="submit" name="submit_btn" class="btn" value="Отправить"></div>
+							<input type="hidden" name="code" value="<%CODE%>">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>

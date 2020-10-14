@@ -1,0 +1,2 @@
+Host: https://xn--n1aaebceh.xn--p1ai
+Sitemap: https://xn--n1aaebceh.xn--p1ai/sitemap.xml

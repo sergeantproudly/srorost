@@ -1,0 +1,17 @@
+<div class="bl-target-form <%CLASS%>">
+				<div class="holder">
+					<div class="wrap">
+						<h2><%TITLE%></h2>
+						<%CONTENT%>
+
+						<form action="<%ACTION%>" method="post" class="form" data-submit="sendTarget">
+							<input type="tel" name="tel" maxlength="255" value="" data-mask="+7 999 999-99-99" placeholder="Телефон" aria-required>
+							<button class="btn" name="submit_btn"><%BUTTON%></button>
+							<input type="hidden" name="code" value="<%CODE%>">
+						</form>
+						<div class="law"><%LAW%></div>
+
+						<div class="bg-person" style="background-image: url('<%PHOTO%>');"></div>
+					</div>
+				</div>
+			</div>

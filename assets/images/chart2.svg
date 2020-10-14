@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="50px" height="54px" viewBox="0 0 50 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="25" cy="24.9999" r="25"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2">
+            <circle id="Oval" fill="#094295" fill-rule="nonzero" cx="25" cy="28.9999" r="25"></circle>
+            <g id="Clipped" transform="translate(0.000000, 4.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Oval"></g>
+                <path d="M53,9.4999 L25.5,27.4999 L45.5,0.99988 C49.4531,2.81848 51.5,5.9999 53,9.4999 Z" id="Shape" fill="#745BBC" fill-rule="nonzero" mask="url(#mask-2)"></path>
+            </g>
+            <path d="M44.7528,5.99585 L24.9903,32.2579 L34.8139,0.54436 C39.1495,0.914 42.1543,3.2123 44.7528,5.99585 Z" id="Shape" fill="#0AA2B7" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

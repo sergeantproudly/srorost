@@ -1,0 +1,14 @@
+<div class="h1"><%TITLE%></div>
+
+				<div class="text">
+					<%TEXT%>
+				</div>		
+
+				<form action="<%ACTION%>" method="post" class="form">
+					<input type="text" name="name" maxlength="255" value="" placeholder="Имя">
+					<input type="tel" name="tel" maxlength="255" value="" data-mask="tel" placeholder="Телефон">
+
+					<div class="cb-line"><input type="checkbox" name="agree" checked="checked" id="modal-target-agree"><label for="modal-target-agree">Я согласен (а) на обработку контактных данных</label></div>
+
+					<button class="btn">Отправить</button>
+				</form>

@@ -1,0 +1,21 @@
+<section id="content">
+			<div id="new">
+				<div class="holder">
+					<div class="date"><%DATE%></div>
+					<h1><%TITLE%></h1>
+
+					<%IMAGE%>
+					<div class="text"><%TEXT%></div>
+
+					<div class="ss" id="social-shares" data-share-title="<%SHARETITLE%>" data-share-url="<%SHAREURL%>" data-share-image="<%SHAREIMAGE%>" data-share-description="<%SHARETEXT%>">
+						<ul>
+							<li class="vk"><a href="#" target="_blank" rel="nofollow" data-api-url="https://vk.com/share.php?url=%url%&title=%title%&image=%image%&description=%description%"><img src="assets/images/ico_vk.svg" alt="#" title="#">Поделиться</a></li>
+							<li class="fb"><a href="#" target="_blank" rel="nofollow" data-api-url="https://www.facebook.com/sharer.php?p[url]=%url%&p[title]=%title%&p[summary]=%decsription%&p[images][0]=%image%"><img src="assets/images/ico_fb.svg" alt="#" title="#">Поделиться</a></li>
+							<li class="tw"><a href="#" target="_blank" rel="nofollow" data-api-url="https://twitter.com/share?url=%url%&text=%description%"><img src="assets/images/ico_tw.svg" alt="#" title="#">Поделиться</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<%OTHERS%>
+		</section>

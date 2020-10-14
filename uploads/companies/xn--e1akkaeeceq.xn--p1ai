@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base href="http://сропроект.рф/" >
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<title>Ассоциация СРО «ЭкспертПроект» | </title>
+<script language="JavaScript" type="text/javascript" src="ajax/global_func.js"></script><script type="text/javascript" src="ajax/load.js"></script>
+<script language="JavaScript" type="text/javascript" src="ajax/block_error.js"></script>
+
+<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link href='templates/theme/fonts/Raleway/Raleway.css' rel='stylesheet' type='text/css'/>
+	<link href='templates/theme/css/bootstrap.min.css' rel='stylesheet' type='text/css'/>
+	<link href='templates/theme/css/style.css' rel='stylesheet' type='text/css'/>
+	<link href='templates/theme/css/media.css' rel='stylesheet' type='text/css'/>
+	<link rel="shortcut icon" href="templates/theme/images/favicon.ico" />
+	<link href="templates/theme/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+
+<!-- Header -->
+<header id="header" class="header">
+
+    <div class="switch_sro">
+        <div class="container">
+            <a href="http://xn--e1afkjdhecfed6j.xn--p1ai/">
+
+            <img src="templates/theme/images/logo3.png" width="150" alt="" title="" />
+            </a>
+
+        </div>
+    </div>
+
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand pull-left hidden-lg hidden-md hidden-sm" href="index.html">
+                            <img src="templates/theme/images/logo.png" alt="" title="" />
+                        </a>
+                <div class="clearfix"></div>
+            </div>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li class="logo_list hidden-lg hidden-xs">
+                        <a class="navbar-brand" href="index.html">
+                            <img src="templates/theme/images/logo.png" alt="" title="" />
+                        </a>
+                    </li>
+
+                    <li class="dropdown">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Об Ассоциации  <span class="caret"></span></a>
+             <ul class="dropdown-menu"><li><a href="content/v/1">Об Ассоциации</a></li><li class="divider"></li><li><a href="content/v/15">Компенсационные фонды</a></li><li class="divider"></li><li><a href="content/v/16">Исполнительный орган</a></li><li class="divider"></li><li><a href="content/v/17">Коллегиальный орган</a></li><li class="divider"></li></ul></li>
+<li><a href="content/v/2">Вступление в СРО</a></li>
+
+
+                     <li class="dropdown">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Информация  <span class="caret"></span></a>
+             <ul class="dropdown-menu"><li><a href="content/v/4">Документы СРО</a></li><li class="divider"></li><li><a href="content/v/7">Структура управления</a></li><li class="divider"></li><li><a href="content/v/8">Положения и правила СРО</a></li><li class="divider"></li><li><a href="content/v/11">Контрольный комитет</a></li><li class="divider"></li><li><a href="content/v/12">Дисциплинарный комитет</a></li><li class="divider"></li><li><a href="content/v/13">Запрос выписки из реестра членов СРО</a></li><li class="divider"></li><li><a href="content/v/14">Сотрудничество</a></li><li class="divider"></li><li><a href="content/v/18">Финансовый котроль</a></li><li class="divider"></li><li><a href="content/v/19">Государственный контроль</a></li><li class="divider"></li><li><a href="content/v/20">Банковские гарантии</a></li><li class="divider"></li><li><a href="content/v/21">Страхование</a></li><li class="divider"></li><li><a href="oplata">Оплата счета</a></li>
+	                <li class="divider"></li>
+
+                          <li><a href="news">Новости</a></li>
+                       </ul>
+                    </li>
+
+
+                    <li>
+                        <a class="navbar-brand hidden-md hidden-sm hidden-xs" href="index.html">
+                            <img src="templates/theme/images/logo.png" alt="" title="" />
+                        </a>
+                    </li>
+
+                   <li class="dropdown">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Протоколы СРО  <span class="caret"></span></a>
+             <ul class="dropdown-menu"><li><a href="content/v/5">Протоколы Общего Собрания</a></li><li class="divider"></li><li><a href="content/v/6">Протоколы Правления</a></li><li class="divider"></li><li><a href="content/v/28">Архив Протоколов</a></li><li class="divider"></li></ul></li>
+
+                    <li>
+                        <a href="reestr">РЕЕСТР ЧЛЕНОВ СРО</a>
+                    </li>
+                    <li>
+                        <a href="contact">КОНТАКТЫ</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section class="search">
+    <div class="container">
+         <form method="post" action="search">
+            <input type="search" name="search">
+             <input type="hidden" name="op" value="search_result">
+            <input type="submit" name="submit" value="Поиск">
+        </form>
+    </div>
+</section>
+
+<div class="navbar navbar-default collapse navbar-collapse" id="menu2">
+                <ul class="fin_o nav navbar-nav "><li><a href="content/v/22">Банковская гарантия</a></li><li><a href="content/v/23">Кредитование</a></li><li><a href="content/v/24">Тендерное Сопровождение</a></li><li><a href="content/v/25">Страхование</a></li><li><a href="content/v/26">Арбитражное Право</a></li><li><a href="content/v/27">Экспертиза Проектов</a></li></ul>
+            </div>
+ <section id="banner" class="banner">
+	<div class="container">
+		<h1>Ассоциация СРО «ЭкспертПроект»</h1>
+		<span><p>Вам необходимо получить допуск СРО? Не можете участвовать в тендерах без специального разрешения? </p></span>
+	</div>
+	<div class="bottom_element"></div>
+   </section>
+
+
+<section id="content" class="content">
+	<div class="container">
+     <p><strong>Ассоциация проектировщиков саморегулируемая организация «Объединение проектных организаций «ЭкспертПроект» </strong>стремится к формированию качественного и надежного рынка услуг в области строительства, акцентируя свое внимание не только на развитии деловых связей между строительными организациями и их партнерами, но и на создании прочной базы ответственности за членов Ассоциации.     </p>
+<p><strong>Ассоциация СРО «ЭкспертПроект» гарантирует:</strong></p>
+<p>- защиту прав и законных интересов своих членов;</p>
+<p>- повышение качества выполняемых работ;</p>
+<p>- членство в Ассоциации ведет к взаимной поддержке её участников;</p>
+<p>- помощь в повышении квалификации работников членов Ассоциации;</p>
+<p>- информационную поддержку членов Ассоциации.</p>
+<p><strong>Ассоциация СРО «ЭкспертПроект»</strong> предлагает на выгодных условиях стать участником Ассоциации и получить допуск к проектным видам работ, затратив по минимуму свои временные и финансовые ресурсы.</p>
+<p><span></span>Все интересующие Вас вопросы Вы можете задать <strong>по телефону +7(495) 151-25-21</strong>, либо по электронной почте sro299@mail.ru</p><br /><br />
+	</div>
+
+	<div class="bottom_element"></div>
+</section>
+
+<footer id="footer" class="footer">
+	<div class="container">
+		<div class="col-md-4">
+			<div class="phone">
+                <p>Телефон:</p>
+                <span>+7(495) 151-25-21</span>
+            </div>
+		</div>
+		<div class="col-md-4">
+			<img src="templates/theme/images/logo.png" alt="" title="" />
+		</div>
+		<div class="col-md-4">
+			<address>
+			<p>Адрес:</p>
+                 <span>107078, г. Москва, Орликов пер, дом № 4, этаж 3​.</span>
+            </address>
+		</div>
+        <div class="clearfix"></div>
+        <hr class=hr_css>
+        <span class="copyrigth">© Ассоциация СРО «ЭкспертСтрой», 2012-2019<br />Последнее изменение информации на сайте: 11.06.2019 - 16:49 <br />
+   <small>(Размещено в соответствии с требованиями законодательства об информационной открытости)</small>
+</span>
+	</div>
+</footer>
+
+<script type="text/javascript" src="templates/theme/js/jquery.js"></script>
+<script type="text/javascript" src="templates/theme/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="templates/theme/js/script.js"></script>
+<script type="text/javascript" charset="utf-8" src="callme/js/callme.js"></script>
+</body>
+
+</html>

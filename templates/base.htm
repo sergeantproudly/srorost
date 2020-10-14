@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="keywords" content="<%META_KEYWORDS%>"/>
+	<meta name="description" content="<%META_DESCRIPTION%>"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+	<link rel="manifest" href="assets/images/site.webmanifest">
+	<link rel="mask-icon" href="assets/images/safari-pinned-tab.svg" color="#5bbad5">
+	<link rel="shortcut icon" href="favicon.ico">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-config" content="assets/images/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+	<title><%PAGE_TITLE%></title>
+	<%META_VERIFICATION%>
+	<meta property="og:type" content="website"/>
+	<meta property="og:title" content="<%PAGE_TITLE%>"/>
+	<meta property="og:description" name="description" content="<%META_DESCRIPTION%>"/>
+	<meta property="og:image" content="<%META_IMAGE%>"/>
+    <link type="text/css" rel="stylesheet" href="assets/css/style.css?19"/>
+    <%ANALYTICS%>
+</head>
+
+<body>
+	<%YANDEX_METRIKA%>
+
+	<div id="layout">
+		<header>
+			<div class="holder">
+				<div class="wrap">
+					<a href="<%SITE_URL%>" id="logo"><img src="assets/images/rost_logo1.svg" alt="<%SITE_TITLE_ALT%>" title="<%SITE_TITLE_ALT%>"></a>
+
+					<%BL_CITY%>
+
+					<%MN_MAIN%>
+
+					<div id="tels">
+						<%TELS%>
+					</div>
+
+					<a href="#bl-feedback" id="feedback"><span><%FEEDBACKTITLE%></span></a>
+				</div>
+			</div>
+		</header>
+
+		<%BREAD_CRUMBS%>
+
+		<%CONTENT%>
+
+		<%FORM_BOTTOM%>
+	</div>
+
+	<footer>
+		<div class="topline">
+			<div class="holder">
+				<div class="flex">
+					<a href="<%SITE_URL%>" id="logo-footer"><img src="assets/images/rost_logo1.svg" alt="<%SITE_TITLE_ALT%>" title="<%SITE_TITLE_ALT%>"></a>
+					<div id="copyright"><%COPYRIGHT%></div>
+
+					<ul id="mn-law">
+						<li><%LAW1%></li>
+						<li><%LAW2%></li>
+						<li><a href="/karta-sayta/">Карта сайта</a></li>
+					</ul>
+				</div>
+
+				<div class="flex">
+					<div class="tels">
+						<a href="tel:<%PHONENUMBERLINK1%>"><%PHONENUMBER1%></a>
+						<a href="tel:<%PHONENUMBERLINK2%>"><%PHONENUMBER2%></a>
+					</div>
+
+					<div class="emails">
+						<a href="mailto:<%ADMINEMAIL1%>"><%ADMINEMAIL1%></a>
+						<a href="mailto:<%ADMINEMAIL2%>"><%ADMINEMAIL2%></a>
+					</div>
+
+					<div class="address"><%ADDRESS%></div>
+				</div>
+			</div>
+		</div>
+		<div class="holder">
+			<div id="mn-bottom">
+				<div class="mn">
+					<%MN_BOTTOM1_HEADER%>
+					<%MN_BOTTOM1%>
+				</div>
+				<div class="mn">
+					<%MN_BOTTOM2_HEADER%>
+					<%MN_BOTTOM2%>
+				</div>
+				<div class="mn">
+					<%MN_BOTTOM3_HEADER%>
+					<%MN_BOTTOM3%>
+				</div>
+			</div>
+		</div>
+		<div id="proudly">
+			Сайт сделали <a href="https://proudly.ru" target="_blank"><img src="assets/images/proudly.svg" alt="Proudly" title="Proudly"></a>
+		</div>
+	</footer>
+
+	<div class="modal-fadeout"></div>
+	
+	<%MODALS%>
+
+	<%CONSULTANT%>
+
+	<script type="text/javascript" src="assets/js/scripts.js?15"></script>
+</body>
+</html>

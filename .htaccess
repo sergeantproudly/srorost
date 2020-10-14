@@ -1,0 +1,78 @@
+Order allow,deny
+Allow from all
+Options +FollowSymlinks
+RewriteEngine on
+#RewriteCond %{HTTPS} off
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !/robots.txt [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+RewriteCond %{REQUEST_URI} admin(.*)$
+RewriteRule admin(.*)$ mycms$1 [L]
+RewriteCond %{REQUEST_URI} ^(.*)/{2,}(.*)$
+RewriteRule . %1/%2 [R=301,L]
+RedirectMatch 301 ^/([^/]+)/dopusk-sro/   /$1/dopusksro/
+RewriteCond %{REQUEST_URI} \..+$
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+RewriteCond %{REQUEST_URI} assets\/images\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule assets\/images\/([^/]+)\/([^/]+)\.([^/-]+)$ assets\/images/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} assets\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule assets\/([^/]+)\/([^/]+)\.([^/-]+)$ assets/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} files\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule files\/([^/]+)\/([^/]+)\.([^/-]+)$ files/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} extends\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule extends\/([^/]+)\/([^/]+)\.([^/-]+)$ extends/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} uploads\/([^/]+)\/([^/]+)\.([^/-]+)$
+RewriteRule uploads\/([^/]+)\/([^/]+)\.([^/-]+)$ uploads/$1/$2\.$3 [L]
+RewriteCond %{REQUEST_URI} sitemap([^/]+)\.xml$
+RewriteRule sitemap([^/]+)\.xml$ sitemaps/sitemap$1\.xml [L]
+RewriteCond %{REQUEST_URI} ([^/]+)\/([^/]+)\.?([^/-]*)$
+RewriteRule ([^/]+)\/([^/]+)\.([^/-]+)$ $1/$2.$3 [L]
+RewriteCond %{REQUEST_URI} ([^/]+)\.?([^/-]*)$
+RewriteRule ([^/]+)\.([^/-]+)$ $1.$2 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^/]+)\/([^/]+)\/([^/]+)\/?$ index&p_code=$1&p_code2=$2&p_code3=$3 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^/]+)\/([^/]+)\/?$ index&p_code=$1&p_code2=$2 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule (^.+/|^)([^\-/]+)((-|\.)[^\/]*)\/?$ $1index&p_code=$2$3 [L]
+RewriteCond %{REQUEST_URI} !(^.+/|^/|^)index
+RewriteRule ([^-/]+)\/?$ index&p_code=$1 [L]
+#RewriteRule (.*)\/$ $1
+RewriteRule ([^\-\-]+)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-]*)$ $1&$2=$3&$4=$5&$6=$7&$8=$9
+RewriteRule ([^\-\-]+)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-\-]*)$ $1&$2=$3&$4=$5&$6=$7
+RewriteRule ([^\-\-]+)--([^\-]+)-([^\-\-]*)--([^\-]+)-([^\-\-]*)$ $1&$2=$3&$4=$5
+RewriteRule ([^\-\-]+)--([^\-]+)-([^\-\-]*)$ $1&$2=$3
+RewriteRule (^.+/|^)index$ $1index.php [L]
+RewriteRule (^.+/|^)index&([^\/]*)\/?$ $1index.php?$2 [L]
+#RewriteCond %{REQUEST_URI} !/$
+#RewriteCond %{REQUEST_URI} !\.
+#RewriteRule ^(.*) %{REQUEST_URI}/ [R=301,L]
+php_value error_reporting 7
+php_value upload_max_filesize 50M
+php_value post_max_size 50M
+php_value session.use_cookies 1
+php_value session.use_trans_sid 0
+php_value max_execution_time 0
+php_value magic_quotes_gpc 0
+php_value magic_quotes_runtime 0
+php_value register_globals 0
+php_flag log_errors on
+php_value error_log /home/a0289784/domains/xn--n1aaebceh.xn--p1ai/public_html/error.log
+
+
+### begin Sprinthost-redirects 24.09.2020 00:23
+Redirect 301 /dopusk-sro https://xn--n1aaebceh.xn--p1ai/dopusksro/
+Redirect 301 /zakonodatelstvo/postanovlenie_pravitelstva_rf_ot_29_sentyabrya_2008_g._n_724/ https://xn--n1aaebceh.xn--p1ai/zakonodatelstvo/postanovlenie_pravitelstva_rf_ot_29_sentyabrya_2008_g_n_724/
+Redirect 301 /zakonodatelstvo/federalniy_zakon_ot_22.07.2008_n_148_fz/ https://xn--n1aaebceh.xn--p1ai/zakonodatelstvo/federalniy_zakon_148_fz/
+Redirect 301 /zakonodatelstvo/postanovlenie_ot_29_sentyabpya_2008_goda._n_724/ https://xn--n1aaebceh.xn--p1ai/zakonodatelstvo/postanovlenie_724/
+Redirect 301 /sro-energoauditorov/ https://xn--n1aaebceh.xn--p1ai/vstuplenie-sro/
+Redirect 301 /sertifikat-iso/licenziya_mchs/ https://xn--n1aaebceh.xn--p1ai/litsenzirovanie/licenziya_mchs/
+Redirect 301 /sertifikat-iso/licenziya-fsb/ https://xn--n1aaebceh.xn--p1ai/litsenzirovanie/licenziya-fsb/
+Redirect 301 /sertifikat-iso/licenziya-minkultury/ https://xn--n1aaebceh.xn--p1ai/litsenzirovanie/licenziya-minkultury/
+Redirect 301 /zakonodatelstvo/GKRF-FZ190.php https://xn--n1aaebceh.xn--p1ai/zakonodatelstvo/gradostpoitelniy_kodeks_rossiyskoy_fedepacii_n_190_fz_videpjki_v_chasti_samopegylipovaniya/
+### Sprinthost-redirects end

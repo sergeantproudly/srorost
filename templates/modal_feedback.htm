@@ -1,0 +1,18 @@
+<div class="h1"><%TITLE%></div>
+
+				<div class="text">
+					<%TEXT%>
+				</div>		
+
+				<form action="<%ACTION%>" method="post" class="form" data-submit="sendFeedback">
+					<input type="text" name="name" maxlength="255" value="" placeholder="Имя">
+					<input type="tel" name="tel" maxlength="255" value="" data-mask="+7 999 999-99-99" placeholder="Телефон" aria-required>
+
+					<textarea name="text" placeholder="Вопрос"></textarea>
+
+					<div class="cb-line"><input type="checkbox" name="agree" checked="checked" id="modal-<%ID%>-agree"><label for="modal-<%ID%>-agree">Я согласен (а) на обработку контактных данных</label></div>
+
+					<button name="submit_btn" class="btn">Отправить</button>
+					
+					<input type="hidden" name="code" value="modal-<%CODE%>">
+				</form>

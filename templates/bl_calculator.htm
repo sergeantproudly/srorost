@@ -1,0 +1,35 @@
+<div id="bl-calculator" class="<%CLASS%>" data-page-id="<%PAGEID%>" data-type-id=<%SERVICEID%> data-base-sum="<%BASESUM%>">
+				<div class="holder">
+					<h2><%TITLE%></h2>
+					<div class="text">
+						<%TEXT%>
+					</div>
+
+					<div class="wrap">
+						<div class="overflow">
+							<ul class="flex">
+								<li id="calc-final">
+									<h3 class="final"><%FINALHEADER%>:</h3>
+									<div class="sum" id="calc-final-sum"></div>
+									<p class="text"><%FINALTEXT%></p>
+									<form action="<%ACTION%>" method="post" id="calc-form" class="form" data-submit="sendCalculation">
+										<input type="tel" name="tel" maxlength="255" value="" placeholder="Телефон" data-mask="+7 999 999-99-99">
+										<button class="btn" name="submit_btn"><%FINALBUTTON%></button>
+										<input type="hidden" name="code" value="<%CODE%>">
+									</form>
+								</li>
+							</ul>
+
+							<div class="info">
+								<div class="step"></div>
+								<button class="btn" disabled="disabled">Далее</button>
+							</div>
+							<div class="alt">
+								<div class="heading">Или</div>
+								<p>Получите быстрый расчет от нашего эксперта <%NAMEGEN%> по телефону:</p>
+								<a href="tel:<%PHONELINK%>" class="tel"><%PHONE%></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
