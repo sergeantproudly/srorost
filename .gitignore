@@ -1,0 +1,5 @@
+node_modules/
+.htaccess
+settings.php
+mycms/settings.php
+error.log
