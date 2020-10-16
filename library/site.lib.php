@@ -52,6 +52,10 @@
 			return $this->modals;
 		}
 
+		public function IsPageLocal($pageCode) {
+			return (boolean)$this->db->getOne('SELECT IsLocal FROM static_pages WHERE Code = ?s LIMIT 0, 1', $pageCode);
+		}
+
 		public function GetPage() {
 			krnLoadLib('define');
 			krnLoadLib('menu');

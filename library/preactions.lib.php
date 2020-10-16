@@ -48,12 +48,15 @@
 		 		$_LEVEL[1] = $_GET['p_code'];
 		 		$_LEVEL[2] = $_GET['p_code2'];
 
-		 		// если город был определен ранее и это не Москва, добавляем его в роутинг и перезагружаем страницу
-		 		if (isset($_SESSION['ClientUser']['City']['Id']) && $_SESSION['ClientUser']['City']['Id'] != CITY_MOSCOW_ID && $_LEVEL[1] != 'ajax' && $_LEVEL[1] != 'blocks') {
-		 			$route = '/' . $_SESSION['ClientUser']['City']['Code'] . '/';
-		 			if ($_LEVEL[1]) $route .= $_LEVEL[1] . '/';
-		 			if ($_LEVEL[2]) $route .= $_LEVEL[2] . '/';
-		 			__Redirect($route);
+		 		// проверяем не является ли страница локальной
+		 		if (!$Site->IsPageLocal($Site->GetCurrentPage())) {
+		 			// если город был определен ранее и это не Москва, добавляем его в роутинг и перезагружаем страницу
+			 		if (isset($_SESSION['ClientUser']['City']['Id']) && $_SESSION['ClientUser']['City']['Id'] != CITY_MOSCOW_ID && $_LEVEL[1] != 'ajax' && $_LEVEL[1] != 'blocks') {
+			 			$route = '/' . $_SESSION['ClientUser']['City']['Code'] . '/';
+			 			if ($_LEVEL[1]) $route .= $_LEVEL[1] . '/';
+			 			if ($_LEVEL[2]) $route .= $_LEVEL[2] . '/';
+			 			__Redirect($route);
+			 		}
 		 		}
 		 	}
 		 	
