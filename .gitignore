@@ -3,3 +3,5 @@ node_modules/
 settings.php
 mycms/settings.php
 error.log
+sitemap.xml
+sitemaps/
