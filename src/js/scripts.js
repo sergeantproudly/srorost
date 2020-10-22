@@ -1147,7 +1147,7 @@ var sendSro;
 
 				var exclusions = new Array();
 				$.each(data, function(index, item) {
-					if (item[0]['Excluded']) {
+					if (typeof(item[0]) != 'undefined' && item[0]['Excluded']) {
 						exclusions.push(+index);
 					}
 				});
