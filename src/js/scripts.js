@@ -850,12 +850,14 @@ var sendSro;
 				$('#modal-geo button').removeAttr('disabled').click();
 			});
 
+			$list.find('ul>li>a').click(function(e) {
+				e.preventDefault();
+			});
+
 			$('#modal-geo button').click(function() {
 				var data = {
 					city_id: $list.data('city-id')
 				};
-				console.log(data);
-				return false;
 				$.ajax({
 					type: 'post',
 					url: '/ajax--act-SetCity/',
