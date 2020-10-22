@@ -541,7 +541,7 @@ var sendSro;
 
 (function ($) {
 	$.fn.lightTabs = function() {
-		var showTab = function(tab, saveHash) {;
+		var showTab = function(tab, saveHash) {
 			if (!$(tab).hasClass('tab-act')) {
 				var tabs = $(tab).closest('.tabs');
 
@@ -1145,15 +1145,26 @@ var sendSro;
 				var $step = $('#bl-calculator .wrap>.overflow .info>.step');
 				var $btn = $('#bl-calculator .wrap>.overflow .info>.btn');
 
-				var stepCurr = 1;
-				var stepsTotal = Object.keys(data).length;
+				var exclusions = new Array();
+				$.each(data, function(index, item) {
+					if (item[0]['Excluded']) {
+						exclusions.push(+index);
+					}
+				});
 
-				$step.text(stepCurr + ' из ' + stepsTotal);
+				var stepsTotal = Object.keys(data).length;
+				var realStepsTotal = stepsTotal - exclusions.length;
+				var stepCurr = 1;
+				while (exclusions.includes(stepCurr) && stepCurr <= stepsTotal) {
+					stepCurr++;
+				}
+
+				$step.text('1 из ' + realStepsTotal);
 
 				calcSetStep({
 					active: true,
-					index: 1,
-					data: data[1][0]
+					index: stepCurr,
+					data: data[stepCurr][0]
 				});
 
 				if ($('#bl-calculator').attr('data-base-sum')) {
@@ -1184,6 +1195,10 @@ var sendSro;
 						}
 
 						var stepNext = stepCurr - 0 + 1;
+						// check next step for exclusion
+						while (exclusions.includes(stepNext) && stepNext <= stepsTotal) {
+							stepNext++;
+						}
 
 						// next step
 						if (stepNext <= stepsTotal
@@ -1203,8 +1218,9 @@ var sendSro;
 							});
 
 							stepCurr = stepNext;
+							var realStepCurr = stepCurr - exclusions.length;
 
-							$step.text((typeof(stepCurr) != 'undefined' ? stepCurr : '0') + ' из ' + stepsTotal);
+							$step.text((typeof(realStepCurr) != 'undefined' ? realStepCurr : '0') + ' из ' + realStepsTotal);
 
 						// final step
 						} else {

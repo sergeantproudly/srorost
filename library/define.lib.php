@@ -42,4 +42,9 @@ define('IMPORT_SRO_FILE_CODE', 'import_sro');
 // PRICE
 define('PAYMENT_LINK', 'https://securepayments.sberbank.ru/payment/docsite/payform-1.html?token=n332cm4hhiivo52h48pgleglcq&ask=amount&ask=email&ask=description');
 
+// CALCULATOR SETTINGS
+define('CALC_TEMPLATE_SETTING_ID', 1);
+define('CALC_BASESUM_SETTING_ID', 2);
+define('CALC_STEP_EXCLUSION_SETTING_ID', 3);
+
 ?>

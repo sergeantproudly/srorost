@@ -21,6 +21,9 @@ function envInit(){
 			$(this).addClass('active').siblings('li').removeClass('active');
 			$('#tab-content-'+id).show().siblings('div:visible').hide();
 			window.location.hash='tab-'+id;
+
+			var $btable = $('#tab-content-'+id).find('#browser-form, [data-id="browser-form"]').removeAttr('data-id').attr('id', 'browser-form');
+			$('#browser-form').not($btable).removeAttr('id').attr('data-id', 'browser-form');
 		});
 		
 		var hash=getHash();
@@ -29,6 +32,9 @@ function envInit(){
 			var id=m[1];
 			$('#tab-'+id).addClass('active').siblings('li').removeClass('active');
 			$('#tab-content-'+id).show().siblings('div:visible').hide();
+
+			var $btable = $('#tab-content-'+id).find('#browser-form, [data-id="browser-form"]').removeAttr('data-id').attr('id', 'browser-form');
+			$('#browser-form').not($btable).removeAttr('id').attr('data-id', 'browser-form');
 		}
 	}
 }
@@ -385,6 +391,10 @@ function envSelectItemSet(sender){
 	inp.value=sender.innerHTML;
 	hidden.value=sender.getAttribute('value');
 	addClass(sender,'current');
+
+	if ($(sel).attr('data-callback')) {
+		eval($(sel).attr('data-callback') + '("' + hidden.name + '")');
+	}
 }
 function envSelectItemOver(sender){
 	addClass(sender,'over');

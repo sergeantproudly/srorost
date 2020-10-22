@@ -497,7 +497,6 @@ function parseUrl(url){
 		'page': pathname?pathname[1]:''
 	}
 	
-	console.log(parser);
 	return parser;
 }
 // get hash
@@ -506,4 +505,20 @@ function getHash(url){
 	var a=document.createElement('a');
 	a.href=url;
 	return a.hash;
+}
+
+// get GET params
+function getGETParams(url) {
+	if(typeof(url)=='undefined')url=window.location.toString();
+	var a=document.createElement('a');
+	a.href=url;	
+	var pathname=a.pathname.match(/^\/?(\w+)/i);
+
+	var params = {};
+	var paramsString = a.search.substring(1).split('&');
+	paramsString.forEach(function(str) {
+		var pair = str.split('=');
+		params[pair[0]] = pair[1];
+	});
+	return params;
 }

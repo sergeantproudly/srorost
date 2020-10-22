@@ -22,6 +22,8 @@
 			3 => Array('Title'=>'Default','Input'=>'inp_text'),
 			4 => Array('Title'=>'Comment','Input'=>'inp_textarea'),
 			5 => Array('Title'=>'Syntax pattern','Input'=>'inp_text'),
+			6 => Array('Title'=>'Browse function','Input'=>'inp_text'),
+			7 => Array('Title'=>'Modify function','Input'=>'inp_text'),
 			10 => Array('Title'=>'Max symbols','Input'=>'inp_text'),
 			20 => Array('Title'=>'Editor type','Input'=>'inp_text'),
 			21 => Array('Title'=>'Max symbols','Input'=>'inp_text'),
@@ -44,6 +46,7 @@
 			83 => Array('Title'=>'No linkself','Input'=>'inp_checkbox'),
 			84 => Array('Title'=>'Order field','Input'=>'inp_text'),
 			85 => Array('Title'=>'Order direction','Input'=>'inp_text'),
+			86 => Array('Title'=>'Changing callback','Input'=>'inp_text'), // new functional
 			90 => Array('Title'=>'Source table','Input'=>'inp_text'),
 			91 => Array('Title'=>'Source field','Input'=>'inp_text'),
 			92 => Array('Title'=>'Link field','Input'=>'inp_text'),
@@ -91,7 +94,8 @@
 			Array('Title'=>'Управление сайтом','Icon'=>'','Module'=>'records','Link'=>'index.php?module=records','PermissionMask'=>PERMISSION_MASK_DEVELOPER|PERMISSION_MASK_ADMINISTRATOR),
 			Array('Title'=>'Пользователи','Icon'=>'','Module'=>'users','Link'=>'index.php?module=users','PermissionMask'=>PERMISSION_MASK_DEVELOPER|PERMISSION_MASK_ADMINISTRATOR|PERMISSION_MASK_MODERATOR),
 			Array('Title'=>'Ajax','Module'=>'ajax','Link'=>'','PermissionMask'=>PERMISSION_MASK_DEVELOPER|PERMISSION_MASK_ADMINISTRATOR|PERMISSION_MASK_MODERATOR),
-			Array('Title'=>'Enter','Module'=>'enter','Link'=>'','PermissionMask'=>PERMISSION_MASK_DEVELOPER|PERMISSION_MASK_ADMINISTRATOR|PERMISSION_MASK_MODERATOR)
+			Array('Title'=>'Enter','Module'=>'enter','Link'=>'','PermissionMask'=>PERMISSION_MASK_DEVELOPER|PERMISSION_MASK_ADMINISTRATOR|PERMISSION_MASK_MODERATOR),
+			Array('Title'=>'Custom','Module'=>'custom','Link'=>'','PermissionMask'=>PERMISSION_MASK_DEVELOPER),
 		);
 		return $folders;
 	}

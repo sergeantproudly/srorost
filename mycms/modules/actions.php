@@ -291,6 +291,23 @@ class actions extends krn_abstract{
 			new Sro($newRecord['File']);
 		}
 	}
+
+	/** Calculator templates */
+	function onDeleteCalculatorTemplate($oldRecord) {
+		dbDoQuery('DELETE FROM calculator_step_variants WHERE StepId IN (SELECT Id FROM calculator_steps WHERE TemplateId = ' . $oldRecord['Id'] . ')', __FILE__, __LINE__);
+		dbDoQuery('DELETE FROM calculator_steps WHERE TemplateId = ' . $oldRecord['Id'], __FILE__,__LINE__);
+
+		$custom = krnLoadModuleByName('custom');
+		$custom->DeleteTemplateSettings($oldRecord['Id']);
+	}
+
+	/** Calculator template steps */
+	function onDeleteCalculatorTemplateStep($oldRecord) {
+		dbDoQuery('DELETE FROM calculator_step_variants WHERE StepId = ' . $oldRecord['Id'], __FILE__, __LINE__);
+		
+		$custom = krnLoadModuleByName('custom');
+		$custom->DeleteStepExclusionSettings($oldRecord['Id']);
+	}
 }
 
 ?>

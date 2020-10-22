@@ -7,6 +7,8 @@ common
 3 the default value
 4 review
 5 syntax pattern
+6 browse function
+7 modify function
 
 line
 ======
@@ -53,6 +55,7 @@ list
 83 prohibition of samosdelka
 84 order field
 85 order direction
+86 callback function on change
 
 multilist
 ======

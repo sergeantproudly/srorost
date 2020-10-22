@@ -477,6 +477,7 @@ function PopupRecordAdd($template){
 				}
 				$inp=strtr($inp,array(
 					'<%IDNUM%>'			=> '',
+					'<%CALLBACK%>'		=> $elementProperties[86] ? ' data-callback="' . $elementProperties[86] . '"' : '',
 					'<%NAME%>'			=> $name,
 					'<%DEFAULT_TITLE%>'	=> $defaultTitle,
 					'<%DEFAULT_VALUE%>'	=> $defaultValue,
@@ -574,188 +575,198 @@ function PopupRecordEdit($template){
 		$inp=LoadTemplate($elementsCodes[$info['Type']]['Input']);
 		$elementProperties=$properties[$info['Id']];
 		$attributes=$elementProperties[1]?' important="true"':'';
-		switch($info['Type']){
-			case 1:
-				if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
-				if($elementProperties[5]=='password')$attributes.=' placeholder="Complete to change password"';
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%VALUE%>'			=> $elementProperties[5]!='password'?$record[$name]:'',
-					'<%MAXLENGTH%>'		=> $elementProperties[10],
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
-			case 2:
-				if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
-				$size=($elementProperties[22]||$elementProperties[23])?'style="'.($elementProperties[22]?'width:'.$elementProperties[22].'px;':'').($elementProperties[23]?'height:'.$elementProperties[23].'px;':'').'"':'';
-				if($elementProperties[20]=='wysiwyg'){
-					$inp=strtr(LoadTemplate('inp_wysiwyg'),array(
+		if (!$elementProperties[7]) {
+			switch($info['Type']){
+				case 1:
+					if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
+					if($elementProperties[5]=='password')$attributes.=' placeholder="Complete to change password"';
+					$inp=strtr($inp,array(
 						'<%IDNUM%>'			=> '',
 						'<%NAME%>'			=> $name,
-						'<%VALUE%>'			=> $record[$name],
-						'<%SIZE%>'			=> $size,
+						'<%VALUE%>'			=> $elementProperties[5]!='password'?$record[$name]:'',
+						'<%MAXLENGTH%>'		=> $elementProperties[10],
 						'<%ATTRIBUTES%>'	=> $attributes
-					));						
-				}else{
+					));
+				break;
+				case 2:
+					if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
+					$size=($elementProperties[22]||$elementProperties[23])?'style="'.($elementProperties[22]?'width:'.$elementProperties[22].'px;':'').($elementProperties[23]?'height:'.$elementProperties[23].'px;':'').'"':'';
+					if($elementProperties[20]=='wysiwyg'){
+						$inp=strtr(LoadTemplate('inp_wysiwyg'),array(
+							'<%IDNUM%>'			=> '',
+							'<%NAME%>'			=> $name,
+							'<%VALUE%>'			=> $record[$name],
+							'<%SIZE%>'			=> $size,
+							'<%ATTRIBUTES%>'	=> $attributes
+						));						
+					}else{
+						$inp=strtr($inp,array(
+							'<%IDNUM%>'			=> '',
+							'<%NAME%>'			=> $name,
+							'<%VALUE%>'			=> $record[$name],
+							'<%SIZE%>'			=> $size,
+							'<%ATTRIBUTES%>'	=> $attributes
+						));
+					}			
+				break;
+				case 3:
+					$dateType=$elementProperties[30];
+					$class=$dateType=='datetime'?'':($dateType=='time'?' time-only':' date-only');
+					$attributes.=' syntax="date'.($elementProperties[5]?','.$elementProperties[5]:'').'"';
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%CLASS%>'			=> $class,
+						'<%NAME%>'			=> $name,
+						'<%VALUE%>'			=> ModifiedDateTime($record[$name],$dateType),
+						'<%ATTRIBUTES%>'	=> $attributes
+					));
+				break;
+				case 4:		
+					if($resize=$elementProperties[42])continue 2;
+					krnLoadLib('files');
+					if($record[$name])$fileInfo=flGetInfo($record[$name]);
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%NAME%>'			=> $name,
+						'<%CAPTION%>'		=> $record[$name]?$fileInfo['basename']:'',
+						'<%VALUE%>'			=> '',
+						'<%RECORDID%>'		=> $id,
+						'<%ELEMENTID%>'		=> $info['Id'],
+						'<%UPLOADERCODE%>'	=> 'Image',
+						'<%UPLOADERINFO%>'	=> 'id:'.$id.',element_id:'.$info['Id']
+					));
+				break;
+				case 5:
+					krnLoadLib('files');
+					if($record[$name])$fileInfo=flGetInfo($record[$name]);
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%NAME%>'			=> $name,
+						'<%CAPTION%>'		=> $record[$name]?$fileInfo['basename']:'',
+						'<%VALUE%>'			=> '',
+						'<%RECORDID%>'		=> $id,
+						'<%ELEMENTID%>'		=> $info['Id'],
+						'<%UPLOADERCODE%>'	=> 'File',
+						'<%UPLOADERINFO%>'	=> 'id:'.$id.',element_id:'.$info['Id']
+					));
+				break;
+				case 6:
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%NAME%>'			=> $name,
+						'<%CB_CHECKED%>'	=> $record[$name]?' cb-checked':'',
+						'<%CHECKED%>'		=> $record[$name]?' checked="checked"':'',
+						'<%ATTRIBUTES%>'	=> $attributes
+					));
+				break;
+				case 7:
+					$variants=explode('; ',$elementProperties[70]);
+					$inpRow=$inp;
+					$inp='';
+					foreach($variants as $variant){
+						$inp.=($inp?'<br/>':'').strtr($inpRow,array(
+							'<%NAME%>'		=> $name,
+							'<%VALUE%>'		=> $variant,
+							'<%TITLE%>'		=> $variant,
+							'<%RB_CHECKED%>'=> $record[$name]==$variant?' rb-checked':'',
+							'<%CHECKED%>'	=> $record[$name]==$variant?' checked="checked"':''
+						));
+					}
+				break;
+				case 8:
+					$defaultTitle='';
+					$defaultValue='';
+					$options=$elementProperties[1]?'':'<span class="item'.(!$record[$name]?' current':'').'" value="0">&nbsp;</span>';
+					$sqlCondition='';
+					if($elementProperties[83]){
+						$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$documentId.')',__FILE__,__LINE__);
+						if($table==$elementProperties[80]){
+							$sqlCondition=' WHERE Id<>'.$id;
+						}
+					}
+					preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
+					if($elementProperties[84]){
+						$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition.' '.($elementProperties[84]?'ORDER BY '.$elementProperties[84].' '.$elementProperties[85]:''),__FILE__,__LINE__);
+					}else{
+						$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition,__FILE__,__LINE__);
+					}
+					while($opt=dbGetRecord($resOpt)){
+						if($opt[$elementProperties[82]]==$record[$name]){
+							$defaultTitle=strtr($elementProperties[81],$opt);
+							$defaultValue=$opt[$elementProperties[82]];
+							$options.='<span class="item current" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
+						}else{
+							$options.='<span class="item" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
+						}
+					}
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%CALLBACK%>'		=> $elementProperties[86] ? ' data-callback="' . $elementProperties[86] . '"' : '',
+						'<%NAME%>'			=> $name,
+						'<%DEFAULT_TITLE%>'	=> $defaultTitle,
+						'<%DEFAULT_VALUE%>'	=> $defaultValue,
+						'<%OPTIONS%>'		=> $options,
+						'<%ATTRIBUTES%>'	=> $attributes
+					));
+				break;
+				case 9:
+					$options='';
+					$sqlCondition='';
+					if($elementProperties[93]){
+						$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$documentId.')',__FILE__,__LINE__);
+						if($table==$elementProperties[90]){
+							$sqlCondition=' WHERE Id<>'.$id;
+						}
+					}
+					$values=array();
+					$resValues=dbDoQuery('SELECT `'.$elementProperties[98].'` FROM `'.$elementProperties[96].'` WHERE `'.$elementProperties[97].'`='.$id,__FILE__,__LINE__);
+					while($recValue=dbGetRow($resValues)){
+						$values[]=$recValue[0];
+					}				
+					
+					preg_match_all('/([A-z0-9]+)/',$elementProperties[91],$matchFields);
+					if($elementProperties[94]){
+						$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition.' '.($elementProperties[94]?'ORDER BY '.$elementProperties[94].' '.$elementProperties[95]:''),__FILE__,__LINE__);
+					}else{
+						$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition,__FILE__,__LINE__);
+					}
+					$counter=0;			
+					while($opt=dbGetRecord($resOpt)){
+						if(in_array($opt[$elementProperties[92]],$values)){
+							$options.='<span class="item current" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
+							$counter++;
+						}else{
+							$options.='<span class="item" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
+						}
+					}
+					$defaultTitle='Выбрано '.$counter.' '.Word125($counter,'значение','значения','значений');
+					$defaultValue=implode(',',$values);
+					$inp=strtr($inp,array(
+						'<%IDNUM%>'			=> '',
+						'<%NAME%>'			=> $elementProperties[96],
+						'<%DEFAULT_TITLE%>'	=> $defaultTitle,
+						'<%DEFAULT_VALUE%>'	=> $defaultValue,
+						'<%OPTIONS%>'		=> $options,
+						'<%ATTRIBUTES%>'	=> $attributes
+					));
+				break;
+				default:
 					$inp=strtr($inp,array(
 						'<%IDNUM%>'			=> '',
 						'<%NAME%>'			=> $name,
 						'<%VALUE%>'			=> $record[$name],
-						'<%SIZE%>'			=> $size,
 						'<%ATTRIBUTES%>'	=> $attributes
 					));
-				}			
-			break;
-			case 3:
-				$dateType=$elementProperties[30];
-				$class=$dateType=='datetime'?'':($dateType=='time'?' time-only':' date-only');
-				$attributes.=' syntax="date'.($elementProperties[5]?','.$elementProperties[5]:'').'"';
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%CLASS%>'			=> $class,
-					'<%NAME%>'			=> $name,
-					'<%VALUE%>'			=> ModifiedDateTime($record[$name],$dateType),
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
-			case 4:		
-				if($resize=$elementProperties[42])continue 2;
-				krnLoadLib('files');
-				if($record[$name])$fileInfo=flGetInfo($record[$name]);
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%CAPTION%>'		=> $record[$name]?$fileInfo['basename']:'',
-					'<%VALUE%>'			=> '',
-					'<%RECORDID%>'		=> $id,
-					'<%ELEMENTID%>'		=> $info['Id'],
-					'<%UPLOADERCODE%>'	=> 'Image',
-					'<%UPLOADERINFO%>'	=> 'id:'.$id.',element_id:'.$info['Id']
-				));
-			break;
-			case 5:
-				krnLoadLib('files');
-				if($record[$name])$fileInfo=flGetInfo($record[$name]);
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%CAPTION%>'		=> $record[$name]?$fileInfo['basename']:'',
-					'<%VALUE%>'			=> '',
-					'<%RECORDID%>'		=> $id,
-					'<%ELEMENTID%>'		=> $info['Id'],
-					'<%UPLOADERCODE%>'	=> 'File',
-					'<%UPLOADERINFO%>'	=> 'id:'.$id.',element_id:'.$info['Id']
-				));
-			break;
-			case 6:
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%CB_CHECKED%>'	=> $record[$name]?' cb-checked':'',
-					'<%CHECKED%>'		=> $record[$name]?' checked="checked"':'',
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
-			case 7:
-				$variants=explode('; ',$elementProperties[70]);
-				$inpRow=$inp;
-				$inp='';
-				foreach($variants as $variant){
-					$inp.=($inp?'<br/>':'').strtr($inpRow,array(
-						'<%NAME%>'		=> $name,
-						'<%VALUE%>'		=> $variant,
-						'<%TITLE%>'		=> $variant,
-						'<%RB_CHECKED%>'=> $record[$name]==$variant?' rb-checked':'',
-						'<%CHECKED%>'	=> $record[$name]==$variant?' checked="checked"':''
-					));
-				}
-			break;
-			case 8:
-				$defaultTitle='';
-				$defaultValue='';
-				$options=$elementProperties[1]?'':'<span class="item'.(!$record[$name]?' current':'').'" value="0">&nbsp;</span>';
-				$sqlCondition='';
-				if($elementProperties[83]){
-					$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$documentId.')',__FILE__,__LINE__);
-					if($table==$elementProperties[80]){
-						$sqlCondition=' WHERE Id<>'.$id;
-					}
-				}
-				preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
-				if($elementProperties[84]){
-					$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition.' '.($elementProperties[84]?'ORDER BY '.$elementProperties[84].' '.$elementProperties[85]:''),__FILE__,__LINE__);
-				}else{
-					$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition,__FILE__,__LINE__);
-				}
-				while($opt=dbGetRecord($resOpt)){
-					if($opt[$elementProperties[82]]==$record[$name]){
-						$defaultTitle=strtr($elementProperties[81],$opt);
-						$defaultValue=$opt[$elementProperties[82]];
-						$options.='<span class="item current" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
-					}else{
-						$options.='<span class="item" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
-					}
-				}
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%DEFAULT_TITLE%>'	=> $defaultTitle,
-					'<%DEFAULT_VALUE%>'	=> $defaultValue,
-					'<%OPTIONS%>'		=> $options,
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
-			case 9:
-				$options='';
-				$sqlCondition='';
-				if($elementProperties[93]){
-					$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$documentId.')',__FILE__,__LINE__);
-					if($table==$elementProperties[90]){
-						$sqlCondition=' WHERE Id<>'.$id;
-					}
-				}
-				$values=array();
-				$resValues=dbDoQuery('SELECT `'.$elementProperties[98].'` FROM `'.$elementProperties[96].'` WHERE `'.$elementProperties[97].'`='.$id,__FILE__,__LINE__);
-				while($recValue=dbGetRow($resValues)){
-					$values[]=$recValue[0];
-				}				
-				
-				preg_match_all('/([A-z0-9]+)/',$elementProperties[91],$matchFields);
-				if($elementProperties[94]){
-					$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition.' '.($elementProperties[94]?'ORDER BY '.$elementProperties[94].' '.$elementProperties[95]:''),__FILE__,__LINE__);
-				}else{
-					$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition,__FILE__,__LINE__);
-				}
-				$counter=0;			
-				while($opt=dbGetRecord($resOpt)){
-					if(in_array($opt[$elementProperties[92]],$values)){
-						$options.='<span class="item current" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
-						$counter++;
-					}else{
-						$options.='<span class="item" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
-					}
-				}
-				$defaultTitle='Выбрано '.$counter.' '.Word125($counter,'значение','значения','значений');
-				$defaultValue=implode(',',$values);
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $elementProperties[96],
-					'<%DEFAULT_TITLE%>'	=> $defaultTitle,
-					'<%DEFAULT_VALUE%>'	=> $defaultValue,
-					'<%OPTIONS%>'		=> $options,
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
-			default:
-				$inp=strtr($inp,array(
-					'<%IDNUM%>'			=> '',
-					'<%NAME%>'			=> $name,
-					'<%VALUE%>'			=> $record[$name],
-					'<%ATTRIBUTES%>'	=> $attributes
-				));
-			break;
+				break;
+			}
+
+		} else {
+			$custom = krnLoadModuleByName('custom');
+			if (method_exists($custom, $elementProperties[7])) {
+				$inp = $custom->{$elementProperties[7]}($record, $name);
+			}
 		}
+		
 		if(isset($params['parent_record_field']) && $name==$params['parent_record_field'] && isset($params['parent_record_id'])){
 			$content.='<input type="hidden" name="'.$name.'" value="'.($params['subst_record_id']?$params['subst_record_id']:$params['parent_record_id']).'"/>';
 		}else{

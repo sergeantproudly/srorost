@@ -134,61 +134,69 @@ class records extends krn_abstract{
 			$tdItems=Array();
 			foreach($fields as $name=>$info){
 				$elementProperties=$properties[$info['Id']];
-				switch($info['Type']){
-					case 2:
-						if($maxLength=$elementProperties[21]){
-							$tdItems[]=nl2br(htmlspecialchars(TrimText($rec[$name],$maxLength),ENT_QUOTES));
-						}else{
-							$tdItems[]=nl2br(htmlspecialchars($rec[$name],ENT_QUOTES));
-						}
-						
-					break;
-					case 3:
-						$dateType=$elementProperties[30];
-						$tdItems[]=ModifiedDateTime($rec[$name],$dateType);
-					break;
-					case 4:
-						if($rec[$name]){
-							$tdItems[]='<a href="'.ROOT_DIR.$rec[$name].'" target="_blank"><img src="'.ROOT_DIR.$rec[$name].'" alt="" class="thumb"/></a>';
-						}else{
-							$tdItems[]='';
-						}
-					break;
-					case 5:
-						if($rec[$name]){
-							$fileInfo=flGetInfo($rec[$name]);
-							$tdItems[]='<a href="'.ROOT_DIR.$rec[$name].'">'.$fileInfo['basename'].'</a>';
-						}else{
-							$tdItems[]='';
-						}				
-					break;
-					case 6:
-						$tdItems[]=$rec[$name]?'да':'нет';
-					break;
-					case 8:
-						preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
-						$titleArr=dbGetRecordFromDb('SELECT `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'` WHERE `'.$elementProperties[82].'`="'.$rec[$name].'"',__FILE__,__LINE__);
-						$tdItems[]=is_array($titleArr)?strtr($elementProperties[81],$titleArr):'';
-					break;
-					default:
-						if($document['LeadElement']==$name || (!$document['LeadElement'] && ($name=='Title' || $name=='Name'))){
-							$ref_tail = '';
-							if (isset($params['parent_documents']) && count($params['parent_documents'])) {
-								foreach ($params['parent_documents'] as $index => $doc_id) {
-									$ref_tail .= '&pdid' . $index . '=' . $doc_id;
-								}
+				if (!$elementProperties[6]) {
+					switch($info['Type']){
+						case 2:
+							if($maxLength=$elementProperties[21]){
+								$tdItems[]=nl2br(htmlspecialchars(TrimText($rec[$name],$maxLength),ENT_QUOTES));
+							}else{
+								$tdItems[]=nl2br(htmlspecialchars($rec[$name],ENT_QUOTES));
 							}
-							if (isset($params['parent_records']) && count($params['parent_records'])) {
-								foreach ($params['parent_records'] as $index => $rec_id) {
-									$ref_tail .= '&prid' . $index . '=' . $rec_id;
-								}
+							
+						break;
+						case 3:
+							$dateType=$elementProperties[30];
+							$tdItems[]=ModifiedDateTime($rec[$name],$dateType);
+						break;
+						case 4:
+							if($rec[$name]){
+								$tdItems[]='<a href="'.ROOT_DIR.$rec[$name].'" target="_blank"><img src="'.ROOT_DIR.$rec[$name].'" alt="" class="thumb"/></a>';
+							}else{
+								$tdItems[]='';
 							}
-							$ref = 'index.php?module=records&mode=view&document_id='.$document['Id'].'&record_id='.$rec[$document['IdElement']] . $ref_tail;
-							$tdItems[]='<a href="'.$ref.'">'.htmlspecialchars($rec[$name],ENT_QUOTES).'</a>';
-						}else{
-							$tdItems[]=htmlspecialchars($rec[$name],ENT_QUOTES);
-						}
-					break;
+						break;
+						case 5:
+							if($rec[$name]){
+								$fileInfo=flGetInfo($rec[$name]);
+								$tdItems[]='<a href="'.ROOT_DIR.$rec[$name].'">'.$fileInfo['basename'].'</a>';
+							}else{
+								$tdItems[]='';
+							}				
+						break;
+						case 6:
+							$tdItems[]=$rec[$name]?'да':'нет';
+						break;
+						case 8:
+							preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
+							$titleArr=dbGetRecordFromDb('SELECT `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'` WHERE `'.$elementProperties[82].'`="'.$rec[$name].'"',__FILE__,__LINE__);
+							$tdItems[]=is_array($titleArr)?strtr($elementProperties[81],$titleArr):'';
+						break;
+						default:
+							if($document['LeadElement']==$name || (!$document['LeadElement'] && ($name=='Title' || $name=='Name'))){
+								$ref_tail = '';
+								if (isset($params['parent_documents']) && count($params['parent_documents'])) {
+									foreach ($params['parent_documents'] as $index => $doc_id) {
+										$ref_tail .= '&pdid' . $index . '=' . $doc_id;
+									}
+								}
+								if (isset($params['parent_records']) && count($params['parent_records'])) {
+									foreach ($params['parent_records'] as $index => $rec_id) {
+										$ref_tail .= '&prid' . $index . '=' . $rec_id;
+									}
+								}
+								$ref = 'index.php?module=records&mode=view&document_id='.$document['Id'].'&record_id='.$rec[$document['IdElement']] . $ref_tail;
+								$tdItems[]='<a href="'.$ref.'">'.htmlspecialchars($rec[$name],ENT_QUOTES).'</a>';
+							}else{
+								$tdItems[]=htmlspecialchars($rec[$name],ENT_QUOTES);
+							}
+						break;
+					}
+
+				} else {
+					$custom = krnLoadModuleByName('custom');
+					if (method_exists($custom, $elementProperties[6])) {
+						$tdItems[] = $custom->{$elementProperties[6]}($rec);
+					}
 				}			
 			}
 			/*
@@ -618,6 +626,7 @@ class records extends krn_abstract{
 						}
 						$inp=strtr($inp,array(
 							'<%IDNUM%>'			=> ' id="'.$name.$i.'"',
+							'<%CALLBACK%>'		=> $elementProperties[86] ? ' data-callback="' . $elementProperties[86] . '"' : '',
 							'<%NAME%>'			=> $name.'['.$i.']',
 							'<%DEFAULT_TITLE%>'	=> $defaultTitle,
 							'<%DEFAULT_VALUE%>'	=> $defaultValue,
@@ -1024,187 +1033,197 @@ class records extends krn_abstract{
 				$inp=LoadTemplate($elementsCodes[$info['Type']]['Input']);
 				$elementProperties=$properties[$info['Id']];
 				$attributes=$elementProperties[1]?' important="true"':'';
-				switch($info['Type']){
-					case 1:
-						if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
-						if($elementProperties[5]=='password')$attributes.=' placeholder="Complete to change password"';
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%VALUE%>'			=> $elementProperties[5]!='password'?$rec[$name]:'',
-							'<%MAXLENGTH%>'		=> $elementProperties[10],
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
-					case 2:
-						if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
-						$size=($elementProperties[22]||$elementProperties[23])?'style="'.($elementProperties[22]?'width:'.$elementProperties[22].'px;':'').($elementProperties[23]?'height:'.$elementProperties[23].'px;':'').'"':'';
-						if($elementProperties[20]=='wysiwyg'){
-							$inp=strtr(LoadTemplate('inp_wysiwyg'),array(
+				if (!$elementProperties[7]) {
+					switch($info['Type']){
+						case 1:
+							if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
+							if($elementProperties[5]=='password')$attributes.=' placeholder="Complete to change password"';
+							$inp=strtr($inp,array(
 								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
 								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-								'<%VALUE%>'			=> $rec[$name],
-								'<%SIZE%>'			=> $size,
+								'<%VALUE%>'			=> $elementProperties[5]!='password'?$rec[$name]:'',
+								'<%MAXLENGTH%>'		=> $elementProperties[10],
 								'<%ATTRIBUTES%>'	=> $attributes
 							));
+						break;
+						case 2:
+							if($elementProperties[5])$attributes.=' syntax="'.$elementProperties[5].'"';
+							$size=($elementProperties[22]||$elementProperties[23])?'style="'.($elementProperties[22]?'width:'.$elementProperties[22].'px;':'').($elementProperties[23]?'height:'.$elementProperties[23].'px;':'').'"':'';
+							if($elementProperties[20]=='wysiwyg'){
+								$inp=strtr(LoadTemplate('inp_wysiwyg'),array(
+									'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+									'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+									'<%VALUE%>'			=> $rec[$name],
+									'<%SIZE%>'			=> $size,
+									'<%ATTRIBUTES%>'	=> $attributes
+								));
+								
+							}else{
+								$inp=strtr($inp,array(
+									'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+									'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+									'<%VALUE%>'			=> $rec[$name],
+									'<%SIZE%>'			=> $size,
+									'<%ATTRIBUTES%>'	=> $attributes
+								));
+							}
+						break;
+						case 3:
+							$dateType=$elementProperties[30];
+							$class=$dateType=='datetime'?'':($dateType=='time'?' time-only':' date-only');
+							$attributes.=' syntax="date'.($elementProperties[5]?','.$elementProperties[5]:'').'"';
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+								'<%CLASS%>'			=> $class,
+								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+								'<%VALUE%>'			=> ModifiedDateTime($rec[$name],$dateType),
+								'<%ATTRIBUTES%>'	=> $attributes
+							));
+						break;
+						case 4:
+							if($resize=$elementProperties[42])continue 2;
+							if($rec[$name])$fileInfo=flGetInfo($rec[$name]);
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+								'<%CAPTION%>'		=> $rec[$name]?$fileInfo['basename']:'',
+								'<%VALUE%>'			=> '',
+								'<%RECORDID%>'		=> $rec[$this->document['IdElement']],
+								'<%ELEMENTID%>'		=> $info['Id'],
+								'<%UPLOADERCODE%>'	=> 'Image',
+								'<%UPLOADERINFO%>'	=> 'id:'.$rec[$this->document['IdElement']].',element_id:'.$info['Id']
+							));
+						break;
+						case 5:
+							if($rec[$name])$fileInfo=flGetInfo($rec[$name]);
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$name.$rec['Id'].'"',
+								'<%NAME%>'			=> $name.'['.$rec['Id'].']',
+								'<%CAPTION%>'		=> $rec[$name]?$fileInfo['basename']:'',
+								'<%VALUE%>'			=> '',
+								'<%RECORDID%>'		=> $rec[$this->document['IdElement']],
+								'<%ELEMENTID%>'		=> $info['Id'],
+								'<%UPLOADERCODE%>'	=> 'File',
+								'<%UPLOADERINFO%>'	=> 'id:'.$rec[$this->document['IdElement']].',element_id:'.$info['Id']
+							));
+						break;
+						case 6:
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+								'<%CB_CHECKED%>'	=> $rec[$name]?' cb-checked':'',
+								'<%CHECKED%>'		=> $rec[$name]?' checked="checked"':'',
+								'<%ATTRIBUTES%>'	=> $attributes
+							));
+						break;
+						case 7:
+							$variants=explode('; ',$elementProperties[70]);
+							$inpRow=$inp;
+							$inp='';
+							foreach($variants as $variant){
+								$inp.=($inp?'<br/>':'').strtr($inpRow,array(
+									'<%NAME%>'		=> $name.'['.$rec[$this->document['IdElement']].']',
+									'<%VALUE%>'		=> $variant,
+									'<%TITLE%>'		=> $variant,
+									'<%RB_CHECKED%>'=> $rec[$name]==$variant?' rb-checked':'',
+									'<%CHECKED%>'	=> $rec[$name]==$variant?' checked="checked"':''
+								));
+							}				
+						break;
+						case 8:
+							$defaultTitle='';
+							$defaultValue='';
+							$options=$elementProperties[1]?'':'<span class="item'.(!$record[$name]?' current':'').'" value="0">&nbsp;</span>';
+							$sqlCondition='';
+							if($elementProperties[83]){
+								$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$this->document['Id'].')',__FILE__,__LINE__);
+								if($this->document['Table']==$elementProperties[80]){
+									$sqlCondition=' WHERE Id<>'.$id;
+								}
+							}
+							preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
+							if($elementProperties[84]){
+								$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition.' '.($elementProperties[84]?'ORDER BY '.$elementProperties[84].' '.$elementProperties[85]:''),__FILE__,__LINE__);
+							}else{
+								$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition,__FILE__,__LINE__);
+							}
+							while($opt=dbGetRecord($resOpt)){
+								if($opt[$elementProperties[82]]==$rec[$name]){
+									$defaultTitle=strtr($elementProperties[81],$opt);
+									$defaultValue=$opt[$elementProperties[82]];
+									$options.='<span class="item current" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
+								}else{
+									$options.='<span class="item" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
+								}
+							}
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
+								'<%CALLBACK%>'		=> $elementProperties[86] ? ' data-callback="' . $elementProperties[86] . '"' : '',
+								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
+								'<%DEFAULT_TITLE%>'	=> $defaultTitle,
+								'<%DEFAULT_VALUE%>'	=> $defaultValue,
+								'<%OPTIONS%>'		=> $options,
+								'<%ATTRIBUTES%>'	=> $attributes
+							));
+						break;
+						case 9:
+							$options='';
+							$sqlCondition='';
+							if($elementProperties[93]){
+								$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$this->document['Id'].')',__FILE__,__LINE__);
+								if($this->document['Table']==$elementProperties[90]){
+									$sqlCondition=' WHERE Id<>'.$rec[$this->document['IdElement']];
+								}
+							}
+							$values=array();
+							$resValues=dbDoQuery('SELECT `'.$elementProperties[98].'` FROM `'.$elementProperties[96].'` WHERE `'.$elementProperties[97].'`='.$rec[$this->document['IdElement']],__FILE__,__LINE__);
+							while($recValue=dbGetRow($resValues)){
+								$values[]=$recValue[0];
+							}
 							
-						}else{
+							preg_match_all('/([A-z0-9]+)/',$elementProperties[91],$matchFields);
+							if($elementProperties[94]){
+								$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition.' '.($elementProperties[94]?'ORDER BY '.$elementProperties[94].' '.$elementProperties[95]:''),__FILE__,__LINE__);
+							}else{
+								$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition,__FILE__,__LINE__);
+							}
+							$counter=0;
+							while($opt=dbGetRecord($resOpt)){
+								if(in_array($opt[$elementProperties[92]],$values)){
+									$options.='<span class="item current" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
+									$counter++;
+								}else{
+									$options.='<span class="item" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
+								}
+							}
+							$defaultTitle='Выбрано '.$counter.' '.Word125($counter,'значение','значения','значений');
+							$defaultValue=implode(',',$values);
+							$inp=strtr($inp,array(
+								'<%IDNUM%>'			=> ' id="'.$elementProperties[96].$rec[$this->document['IdElement']].'"',
+								'<%NAME%>'			=> $elementProperties[96].'['.$rec[$this->document['IdElement']].']',
+								'<%DEFAULT_TITLE%>'	=> $defaultTitle,
+								'<%DEFAULT_VALUE%>'	=> $defaultValue,
+								'<%OPTIONS%>'		=> $options,
+								'<%ATTRIBUTES%>'	=> $attributes
+							));
+						break;
+						default:
 							$inp=strtr($inp,array(
 								'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
 								'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
 								'<%VALUE%>'			=> $rec[$name],
-								'<%SIZE%>'			=> $size,
 								'<%ATTRIBUTES%>'	=> $attributes
 							));
-						}
-					break;
-					case 3:
-						$dateType=$elementProperties[30];
-						$class=$dateType=='datetime'?'':($dateType=='time'?' time-only':' date-only');
-						$attributes.=' syntax="date'.($elementProperties[5]?','.$elementProperties[5]:'').'"';
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%CLASS%>'			=> $class,
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%VALUE%>'			=> ModifiedDateTime($rec[$name],$dateType),
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
-					case 4:
-						if($resize=$elementProperties[42])continue 2;
-						if($rec[$name])$fileInfo=flGetInfo($rec[$name]);
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%CAPTION%>'		=> $rec[$name]?$fileInfo['basename']:'',
-							'<%VALUE%>'			=> '',
-							'<%RECORDID%>'		=> $rec[$this->document['IdElement']],
-							'<%ELEMENTID%>'		=> $info['Id'],
-							'<%UPLOADERCODE%>'	=> 'Image',
-							'<%UPLOADERINFO%>'	=> 'id:'.$rec[$this->document['IdElement']].',element_id:'.$info['Id']
-						));
-					break;
-					case 5:
-						if($rec[$name])$fileInfo=flGetInfo($rec[$name]);
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec['Id'].'"',
-							'<%NAME%>'			=> $name.'['.$rec['Id'].']',
-							'<%CAPTION%>'		=> $rec[$name]?$fileInfo['basename']:'',
-							'<%VALUE%>'			=> '',
-							'<%RECORDID%>'		=> $rec[$this->document['IdElement']],
-							'<%ELEMENTID%>'		=> $info['Id'],
-							'<%UPLOADERCODE%>'	=> 'File',
-							'<%UPLOADERINFO%>'	=> 'id:'.$rec[$this->document['IdElement']].',element_id:'.$info['Id']
-						));
-					break;
-					case 6:
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%CB_CHECKED%>'	=> $rec[$name]?' cb-checked':'',
-							'<%CHECKED%>'		=> $rec[$name]?' checked="checked"':'',
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
-					case 7:
-						$variants=explode('; ',$elementProperties[70]);
-						$inpRow=$inp;
-						$inp='';
-						foreach($variants as $variant){
-							$inp.=($inp?'<br/>':'').strtr($inpRow,array(
-								'<%NAME%>'		=> $name.'['.$rec[$this->document['IdElement']].']',
-								'<%VALUE%>'		=> $variant,
-								'<%TITLE%>'		=> $variant,
-								'<%RB_CHECKED%>'=> $rec[$name]==$variant?' rb-checked':'',
-								'<%CHECKED%>'	=> $rec[$name]==$variant?' checked="checked"':''
-							));
-						}				
-					break;
-					case 8:
-						$defaultTitle='';
-						$defaultValue='';
-						$options=$elementProperties[1]?'':'<span class="item'.(!$record[$name]?' current':'').'" value="0">&nbsp;</span>';
-						$sqlCondition='';
-						if($elementProperties[83]){
-							$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$this->document['Id'].')',__FILE__,__LINE__);
-							if($this->document['Table']==$elementProperties[80]){
-								$sqlCondition=' WHERE Id<>'.$id;
-							}
-						}
-						preg_match_all('/([A-z0-9]+)/',$elementProperties[81],$matchFields);
-						if($elementProperties[84]){
-							$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition.' '.($elementProperties[84]?'ORDER BY '.$elementProperties[84].' '.$elementProperties[85]:''),__FILE__,__LINE__);
-						}else{
-							$resOpt=dbDoQuery('SELECT `'.$elementProperties[82].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[80].'`'.$sqlCondition,__FILE__,__LINE__);
-						}
-						while($opt=dbGetRecord($resOpt)){
-							if($opt[$elementProperties[82]]==$rec[$name]){
-								$defaultTitle=strtr($elementProperties[81],$opt);
-								$defaultValue=$opt[$elementProperties[82]];
-								$options.='<span class="item current" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
-							}else{
-								$options.='<span class="item" value="'.$opt[$elementProperties[82]].'">'.strtr($elementProperties[81],$opt).'</span>';
-							}
-						}
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%DEFAULT_TITLE%>'	=> $defaultTitle,
-							'<%DEFAULT_VALUE%>'	=> $defaultValue,
-							'<%OPTIONS%>'		=> $options,
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
-					case 9:
-						$options='';
-						$sqlCondition='';
-						if($elementProperties[93]){
-							$table=dbGetValueFromDb('SELECT t1.Name FROM mycms_tables AS t1 WHERE t1.Id=(SELECT t2.TableId FROM mycms_documents AS t2 WHERE t2.Id='.$this->document['Id'].')',__FILE__,__LINE__);
-							if($this->document['Table']==$elementProperties[90]){
-								$sqlCondition=' WHERE Id<>'.$rec[$this->document['IdElement']];
-							}
-						}
-						$values=array();
-						$resValues=dbDoQuery('SELECT `'.$elementProperties[98].'` FROM `'.$elementProperties[96].'` WHERE `'.$elementProperties[97].'`='.$rec[$this->document['IdElement']],__FILE__,__LINE__);
-						while($recValue=dbGetRow($resValues)){
-							$values[]=$recValue[0];
-						}
-						
-						preg_match_all('/([A-z0-9]+)/',$elementProperties[91],$matchFields);
-						if($elementProperties[94]){
-							$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition.' '.($elementProperties[94]?'ORDER BY '.$elementProperties[94].' '.$elementProperties[95]:''),__FILE__,__LINE__);
-						}else{
-							$resOpt=dbDoQuery('SELECT `'.$elementProperties[92].'`, `'.implode('`, `',$matchFields[0]).'` FROM `'.$elementProperties[90].'`'.$sqlCondition,__FILE__,__LINE__);
-						}
-						$counter=0;
-						while($opt=dbGetRecord($resOpt)){
-							if(in_array($opt[$elementProperties[92]],$values)){
-								$options.='<span class="item current" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
-								$counter++;
-							}else{
-								$options.='<span class="item" value="'.$opt[$elementProperties[92]].'">'.strtr($elementProperties[91],$opt).'</span>';
-							}
-						}
-						$defaultTitle='Выбрано '.$counter.' '.Word125($counter,'значение','значения','значений');
-						$defaultValue=implode(',',$values);
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$elementProperties[96].$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $elementProperties[96].'['.$rec[$this->document['IdElement']].']',
-							'<%DEFAULT_TITLE%>'	=> $defaultTitle,
-							'<%DEFAULT_VALUE%>'	=> $defaultValue,
-							'<%OPTIONS%>'		=> $options,
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
-					default:
-						$inp=strtr($inp,array(
-							'<%IDNUM%>'			=> ' id="'.$name.$rec[$this->document['IdElement']].'"',
-							'<%NAME%>'			=> $name.'['.$rec[$this->document['IdElement']].']',
-							'<%VALUE%>'			=> $rec[$name],
-							'<%ATTRIBUTES%>'	=> $attributes
-						));
-					break;
+						break;
+					}
+
+				} else {
+					$custom = krnLoadModuleByName('custom');
+					if (method_exists($custom, $elementProperties[7])) {
+						$inp = $custom->{$elementProperties[7]}($rec, $name.'['.$rec[$this->document['IdElement']].']');
+					}
 				}
+				
 				/*
 				if($this->document['ParentId'] && $name==$this->document['ParentField'] && $_SESSION['Filter']){
 					$formRows.='<input type="hidden" name="'.$this->document['ParentField'].'['.$rec[$this->document['IdElement']].']" value="'.$_SESSION['Filter'].'"/>';

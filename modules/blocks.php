@@ -376,6 +376,7 @@ class blocks extends krn_abstract{
 
 	/** Блок - Калькулятор */
 	public function BlockCalculator($service = array()) {
+		krnLoadLib('calculator');
 		$code = 'calculator';
 		$data = $_POST;
 
@@ -389,12 +390,17 @@ class blocks extends krn_abstract{
 					.'WHERE s.Code = ?s';
 			$manager = $this->db->getRow($query, $Params['Site']['Page']['Code']);
 
-			$exists = $this->db->getOne('SELECT COUNT(Id) FROM calculator_steps WHERE PageId = ?s', $manager['PageId']);
+			$calc = new Calculator($manager['PageId']);
+
+			$exists = $this->db->getOne('SELECT COUNT(Id) FROM calculator_steps WHERE TemplateId = ?i', $calc->GetTemplateId());
 
 			if ($exists) {
 				krnLoadLib('sro');
 				$sro = new Sro();
 
+				$sroTypeId = $calc->GetSroTypeId();
+
+				/*
 				if ($Params['Site']['Page']['Code'] == SRO_BUILDERS_SERVICE_CODE && $Params['Site']['Page']['Code'] == SRO_GENPODRYAD_SERVICE_CODE) {
 					$basesum = $sro->GetMinSroSums(SRO_BUILDERS_TYPE_ID) ?: 10000;
 				} elseif ($Params['Site']['Page']['Code'] == SRO_BUILDERS_SERVICE_CODE) {
@@ -402,13 +408,23 @@ class blocks extends krn_abstract{
 				} elseif ($Params['Site']['Page']['Code'] == SRO_BUILDERS_SERVICE_CODE) {
 					$basesum = $sro->GetMinSroSums(SRO_BUILDERS_TYPE_ID) ?: 10000;
 				}
+				*/
+				if ($sroTypeId == SRO_BUILDERS_TYPE_ID) {
+					$basesum = $sro->GetMinSroSums(SRO_BUILDERS_TYPE_ID) ?: 10000;
+				} elseif ($sroTypeId == SRO_PROJECTERS_TYPE_ID) {
+					$basesum = $sro->GetMinSroSums(SRO_PROJECTERS_TYPE_ID) ?: 4167;
+				} elseif ($sroTypeId == SRO_PROSPECTORS_TYPE_ID) {
+					$basesum = $sro->GetMinSroSums(SRO_PROSPECTORS_TYPE_ID) ?: 10000;
+				}
+
+				if ($calc->GetBaseSumId()) $basesum += $calc->GetBaseSumId();
 			}
 
 			$result = $exists ? strtr(LoadTemplate('bl_calculator'), array(
 				'<%TITLE%>'			=> $this->blocks_info[$code]['Header'],
 				'<%TEXT%>'			=> $this->blocks_info[$code]['Content'],
 				'<%PAGEID%>'		=> $manager['PageId'],
-				'<%SERVICEID%>'		=> isset($service['Id']) ? $service['Id'] : 0,
+				'<%SERVICEID%>'		=> $sroTypeId,
 				'<%BASESUM%>'		=> $basesum,
 				'<%CLASS%>'			=> $params['Class'] ?: 'type1',
 				'<%ACTION%>'		=> '/ajax--act-Calculation/',
@@ -423,14 +439,18 @@ class blocks extends krn_abstract{
 			return $result;
 
 		} else {
+			$calc = new Calculator($data['page_id']);
+
 			krnLoadLib('sro');
 			$sro = new Sro();
 
 			$query = 'SELECT Id, Title, Button, VariantId, `Order` '
 					.'FROM calculator_steps '
-					.'WHERE PageId = ?s '
+					.'WHERE TemplateId = ?i '
 					.'ORDER BY IF(`Order`, -100/`Order`, 0)';
-			$steps = $this->db->getInd('Id', $query, $data['page_id']);
+			$steps = $this->db->getInd('Id', $query,$calc->GetTemplateId());
+
+			$exclusions = $calc->GetStepExclusionIds();
 
 			$query = 'SELECT Id, Title, StepId, Operation, AdditionalAction, ExtendedTitle, `Order` '
 					.'FROM calculator_step_variants '
@@ -443,11 +463,12 @@ class blocks extends krn_abstract{
 				} elseif (strpos($variant['Operation'], 'min2') !== false) {
 					$variant['Operation'] = str_replace('min2', $sro->GetMinSroSums(SRO_PROJECTERS_TYPE_ID) ?: 4167, $variant['Operation']);
 				} elseif (strpos($variant['Operation'], 'min3') !== false) {
-					$variant['Operation'] = str_replace('min3', $sro->GetMinSroSums(SRO_PROSPECTORS_TYPE_ID)?: 10000, $variant['Operation']);
+					$variant['Operation'] = str_replace('min3', $sro->GetMinSroSums(SRO_PROSPECTORS_TYPE_ID) ?: 10000, $variant['Operation']);
 				}
 				$steps[$variant['StepId']]['Variants'][$variant['Id']] = $variant;
 			}
 			foreach ($steps as $step) {
+				if (array_search($step['Id'], $exclusions) !== false) $step['Excluded'] = true;
 				$result[$step['Order']][$step['VariantId']] = $step;
 			}
 
