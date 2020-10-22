@@ -42,10 +42,6 @@
 			return $this->GetSettingById(CALC_TEMPLATE_SETTING_ID);	
 		}
 
-		public function GetBaseSumId() {
-			return $this->GetSettingById(CALC_BASESUM_SETTING_ID);	
-		}
-
 		public function GetStepExclusionIds() {
 			$setting = $this->GetSettingById(CALC_STEP_EXCLUSION_SETTING_ID);
 			return $setting ? explode(',', $setting) : [];	
@@ -58,6 +54,18 @@
 
 		public function GetSroTypeId() {
 			return $this->GetSroTypeIdByTemplateId($this->GetTemplateId());
+		}
+
+		public function GetBaseOperation() {
+			return $this->GetSettingById(CALC_BASE_OPERATION_SETTING_ID);	
+		}
+
+		public function GetBaseAdditional() {
+			return $this->GetSettingById(CALC_BASE_ADDITIONAL_SETTING_ID);	
+		}
+
+		public function GetBaseExtendedTitle() {
+			return $this->GetSettingById(CALC_BASE_EXTENDED_TITLE_SETTING_ID);	
 		}
 		
 	}

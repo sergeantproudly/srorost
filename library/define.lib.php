@@ -44,7 +44,9 @@ define('PAYMENT_LINK', 'https://securepayments.sberbank.ru/payment/docsite/payfo
 
 // CALCULATOR SETTINGS
 define('CALC_TEMPLATE_SETTING_ID', 1);
-define('CALC_BASESUM_SETTING_ID', 2);
 define('CALC_STEP_EXCLUSION_SETTING_ID', 3);
+define('CALC_BASE_OPERATION_SETTING_ID', 2);
+define('CALC_BASE_ADDITIONAL_SETTING_ID', 4);
+define('CALC_BASE_EXTENDED_TITLE_SETTING_ID', 5);
 
 ?>

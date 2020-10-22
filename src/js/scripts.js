@@ -1175,6 +1175,25 @@ var sendSro;
 				var extended = {};
 				var sid = $('#bl-calculator').attr('data-type-id') ? $('#bl-calculator').attr('data-type-id') : 0;
 
+				// если проставлена базовая операция
+				if ($('#bl-calculator').attr('data-base-operation')) {
+					// выполняем арифметическую операцию
+					var totalSumOld = totalSum;
+					totalSum = eval(totalSum + $('#bl-calculator').attr('data-base-operation').replace(/х/g, 'x')); // с заменой русской х на латинскую x
+				}
+
+				// если проставлено базовое доп действие
+				if ($('#bl-calculator').attr('data-base-additional')) {
+					// выполняем доп операции
+					eval($('#bl-calculator').attr('data-base-additional').replace(/х/g, 'x')); // с заменой русской х на латинскую x
+				}
+
+				// если проставлено базовое наименование доп услуги
+				if ($('#bl-calculator').attr('data-base-extended-title')) {
+					// фиксируем наименование доп услуги
+					extended[$('#bl-calculator').attr('data-base-extended-title')] = totalSum - totalSumOld;
+				}
+
 				$btn.click(function() {
 					if (typeof(answers[$ul.children('li[data-step='+stepCurr+']').attr('data-id')]) != 'undefined') {
 						var $radio = $ul.find('li[data-step='+stepCurr+'] input:radio:checked');

@@ -416,8 +416,6 @@ class blocks extends krn_abstract{
 				} elseif ($sroTypeId == SRO_PROSPECTORS_TYPE_ID) {
 					$basesum = $sro->GetMinSroSums(SRO_PROSPECTORS_TYPE_ID) ?: 10000;
 				}
-
-				if ($calc->GetBaseSumId()) $basesum += $calc->GetBaseSumId();
 			}
 
 			$result = $exists ? strtr(LoadTemplate('bl_calculator'), array(
@@ -426,6 +424,9 @@ class blocks extends krn_abstract{
 				'<%PAGEID%>'		=> $manager['PageId'],
 				'<%SERVICEID%>'		=> $sroTypeId,
 				'<%BASESUM%>'		=> $basesum,
+				'<%BASEOPERATION%>'	=> $calc->GetBaseOperation(),
+				'<%BASEADDITIONAL%>'	=> $calc->GetBaseAdditional(),
+				'<%BASEEXTENDEDTITLE%>'	=> $calc->GetBaseExtendedTitle(),
 				'<%CLASS%>'			=> $params['Class'] ?: 'type1',
 				'<%ACTION%>'		=> '/ajax--act-Calculation/',
 				'<%NAMEGEN%>'		=> $manager['NameGen'],
