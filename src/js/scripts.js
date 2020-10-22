@@ -855,6 +855,7 @@ var sendSro;
 					city_id: $list.data('city-id')
 				};
 				console.log(data);
+				return false;
 				$.ajax({
 					type: 'post',
 					url: '/ajax--act-SetCity/',
