@@ -376,10 +376,11 @@ class records extends krn_abstract{
 					$data=$record[$name];
 				break;
 			}
-			if($elementProperties[6] || $info['OutputFunc']){
-				krnLoadLib('browse');
-				$func=$info['OutputFunc']?$info['OutputFunc']:($elementProperties[6]?$elementProperties[6]:false); 
-				$data=$func($data,$record);
+			if($elementProperties[6]){
+				$custom = krnLoadModuleByName('custom');
+				if (method_exists($custom, $elementProperties[6])) {
+					$data = $custom->{$elementProperties[6]}($record);
+				}
 			}
 			$formRows.=strtr($formElement,array(
 				'<%EVEN%>'			=> isEven($j)?' class="even"':'',
