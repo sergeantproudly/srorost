@@ -793,7 +793,7 @@ var sendSro;
 		$('#feedback').click(function(e) {
 			e.preventDefault();
 
-			showModal('modal-feedback');
+			showModal($(this).attr('data-modal'));
 		});
 
 		// GEO

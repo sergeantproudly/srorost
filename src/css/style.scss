@@ -777,12 +777,12 @@ header {
 	#tels {
 		position: absolute;
 		top: 0;
-		right: 196px;
+		right: 211px;
 		font-size: 18px;
 		font-weight: 700;
 
 		@media (max-width: $adaptive-width-desktop-small) {
-			right: 263px;
+			right: 277px;
 		}
 
 		@media (max-width: $adaptive-width-tablet) {
@@ -9348,6 +9348,10 @@ footer {
 	min-height: 473px;
 	margin-bottom: 0;
 
+	@media (max-width: $adaptive-width-tablet) {
+		text-align: center;
+	}
+
 	&:after {
 		content: '';
 		display: block;
@@ -9358,6 +9362,10 @@ footer {
 		background-repeat: no-repeat;
 		width: 800px;
 		height: 473px;
+
+		@media (max-width: $adaptive-width-desktop-small) {
+			display: none;
+		}
 	}
 
 	h1,
@@ -9365,12 +9373,21 @@ footer {
 		font-size: 140px;
 		font-weight: 800;
 		margin-bottom: 16px;
+
+		@media (max-width: $adaptive-width-mobile) {
+			font-size: 80px;
+		}
 	}
 
 	p {
 		max-width: 511px;
 		margin-bottom: 34px;
 		line-height: 1.7;
+
+		@media (max-width: $adaptive-width-tablet) {
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 
 	a {
