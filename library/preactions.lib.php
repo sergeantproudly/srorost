@@ -43,6 +43,14 @@
 		 		$_LEVEL[1] = $_GET['p_code2'];
 		 		$_LEVEL[2] = $_GET['p_code3'];
 
+		 		// если страница является локальной, убираем город из роутинга
+		 		if ($Site->IsPageLocal($Site->GetCurrentPage())) {
+		 			$route = '/';
+		 			if ($_LEVEL[1]) $route .= $_LEVEL[1] . '/';
+			 		if ($_LEVEL[2]) $route .= $_LEVEL[2] . '/';
+		 			__Redirect($route);
+		 		}
+
 		 	// город в роутинге не указан
 		 	} else {
 		 		$_LEVEL[1] = $_GET['p_code'];
