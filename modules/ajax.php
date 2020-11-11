@@ -236,10 +236,13 @@ class ajax extends krn_abstract{
 				if ($name) $request .= "Имя: $name\r\n";
 				if ($tel) $request .= "Телефон: $tel\r\n";
 				if ($answers) {
+					krnLoadLib('calculator');
+					$calc = new Calculator($pageId);
+
 					$query = 'SELECT Id, Title, `Order` '
 							.'FROM calculator_steps '
-							.'WHERE PageId = ?s ';
-					$steps = $this->db->getInd('Id', $query, $pageId);
+							.'WHERE TemplateId = ?i ';
+					$steps = $this->db->getInd('Id', $query, $calc->GetTemplateId());
 
 					$query = 'SELECT Id, Title '
 							.'FROM calculator_step_variants '
