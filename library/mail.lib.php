@@ -25,7 +25,7 @@ class Mail {
 	private $newline = "\r\n";
 	private $localhost = 'localhost';
 	private $timeout = '60';
-	private $debug = false;
+	private $debug = true;
 
 	public function __construct($server=false, $port=false, $username=null, $password=null, $secure=null) {
 		global $Config;
