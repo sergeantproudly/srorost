@@ -419,9 +419,9 @@ class ajax extends krn_abstract{
 		$adminTitle = 'Администратор';
 		$adminEmail = 'support@proudly.ru';
 				
-		$letter['subject'] = 'Тест с сайта "'.$siteTitle.'"';
-		$letter['html'] = '<b>Тестовая заявка</b><br/><br/>';
-		$letter['html'] .= str_replace("\r\n", '<br/>', 'Это тестовое тело заявки');
+		$letter['subject'] = 'Заявка с сайта "'.$siteTitle.'"';
+		$letter['html'] = '<b>Задайте свой вопрос нашему эксперту</b><br/><br/>';
+		$letter['html'] .= str_replace("\r\n", '<br/>', 'Имя: Татьяна<br>Телефон: +7 909 406-55-77<br>Текст:<br>Здравствуйте. Специализированное частное учереждение проводило визуальное обследование технического состояния многоквартирного дома, должно ли оно иметь лицензию или аккредитацию на проведение таких работ?');
 		$mail = new Mail();
 		var_dump($mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']));
 
