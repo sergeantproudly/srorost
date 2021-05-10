@@ -412,6 +412,22 @@ class ajax extends krn_abstract{
 		return json_encode($json);
 	}
 
+	function Test() {
+		global $Config;
+		$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
+		$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
+		$adminTitle = 'Администратор';
+		$adminEmail = 'support@proudly.ru';
+				
+		$letter['subject'] = 'Тест с сайта "'.$siteTitle.'"';
+		$letter['html'] = '<b>Тестовая заявка</b><br/><br/>';
+		$letter['html'] .= str_replace("\r\n", '<br/>', 'Это тестовое тело заявки');
+		$mail = new Mail();
+		var_dump($mail->SendMailFromSite($adminEmail, $letter['subject'], $letter['html']));
+
+		die();
+	}
+
 }
 
 ?>
