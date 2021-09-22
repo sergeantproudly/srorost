@@ -16,7 +16,7 @@
 		
 		public function GetCityTitleByIp($ip) {
 			$xml = new DOMDocument();
-			if ($xml->load(GEOAPI_URL . $ip)) {
+			if (@$xml->load(GEOAPI_URL . $ip)) {
 				return $xml->documentElement->getElementsByTagName('city')->item(0)->nodeValue;
 				
 			} else {
