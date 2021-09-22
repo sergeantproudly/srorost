@@ -1,6 +1,6 @@
 <?php
 
-	define('GEOAPI_URL','http://ipgeobase.ru:7020/geo?ip=');
+	define('GEOAPI_URL','https://ipgeobase.ru:7020/geo?ip=');
 	
 	class GeoIP {
 		
