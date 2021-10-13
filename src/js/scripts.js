@@ -1068,7 +1068,8 @@ var sendSro;
 
 				var slided = $('#bl-prices-table').data('slided');
 
-				var vislimit = __isMobileTabletMiddle ? 3 : 2;
+				//var vislimit = __isMobileTabletMiddle ? 3 : 2;
+				var vislimit = __isMobileTabletMiddle ? 2 : 3;
 
 				var from = slided;
 				var to = slided + vislimit;
@@ -1095,7 +1096,9 @@ var sendSro;
 				var slided = $('#bl-prices-table').data('slided');
 				var total = $cols.length - 1;
 
-				var vislimit = __isMobileTabletMiddle ? 3 : 2;
+				//var vislimit = __isMobileTabletMiddle ? 3 : 2;
+				var vislimit = __isMobileTabletMiddle ? 2 : 3;
+				//console.log(vislimit);
 
 				var from = slided + 1;
 				var to = slided + vislimit + 1;
