@@ -412,6 +412,7 @@ class ajax extends krn_abstract{
 		return json_encode($json);
 	}
 
+	/*
 	function Test() {
 		global $Config;
 		$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
@@ -427,6 +428,7 @@ class ajax extends krn_abstract{
 
 		die();
 	}
+	*/
 
 }
 
