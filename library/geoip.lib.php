@@ -16,6 +16,7 @@
 		
 		public function GetCityTitleByIp($ip) {
 			$xml = new DOMDocument();
+			return false; // сделано из-за того, что ресурс ipgeobase больше не работает, чтобы не тормозить загрузку страниц
 			if (@$xml->load(GEOAPI_URL . $ip)) {
 				return $xml->documentElement->getElementsByTagName('city')->item(0)->nodeValue;
 				
