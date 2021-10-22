@@ -1,6 +1,7 @@
 <?php
 
-	define('GEOAPI_URL','https://ipgeobase.ru:7020/geo?ip=');
+	define('GEOAPI_URL', 'http://api.ipstack.com/%IP%?access_key=%API_KEY%');
+	define('GEOAPI_API_KEY', '22f1e254a30de5da0370a918c72e2a6c');
 	
 	class GeoIP {
 		
@@ -13,12 +14,18 @@
 			$this->db = $Params['Db']['Link'];
 			$this->settings = $Settings;
 		}
+
+		protected function GetUrl($ip) {
+			return strtr(GEOAPI_URL, [
+				'%IP%' => $ip,
+				'%API_KEY%' => GEOAPI_API_KEY,
+			]);
+		}
 		
-		public function GetCityTitleByIp($ip) {
-			$xml = new DOMDocument();
-			return false; // сделано из-за того, что ресурс ipgeobase больше не работает, чтобы не тормозить загрузку страниц
-			if (@$xml->load(GEOAPI_URL . $ip)) {
-				return $xml->documentElement->getElementsByTagName('city')->item(0)->nodeValue;
+		public function GetCityCodeByIp($ip) {
+			$url = $this->GetUrl($ip);
+			if (@$json = json_decode(file_get_contents($url), true)) {
+				return strtolower($json['city']);
 				
 			} else {
 				// город не определен
@@ -53,8 +60,8 @@
 			krnLoadLib('define');
 
 			$ip = $this->GetClientIp();
-			if ($city_title = $this->GetCityTitleByIp($ip)) {
-				if ($city = $this->GetCityByTitle($city_title)) {
+			if ($city_code = $this->GetCityCodeByIp($ip)) {
+				if ($city = $this->GetCityByCode($city_code)) {
 					// город найден в базе данных
 					return $city;
 					
