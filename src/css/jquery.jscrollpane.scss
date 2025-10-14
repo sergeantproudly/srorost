@@ -4,20 +4,18 @@
  * Include this stylesheet in your site or copy and paste the styles below into your stylesheet - jScrollPane
  * may not operate correctly without them.
  */
+@use "settings" as *;
 
-.jspContainer
-{
+.jspContainer {
 	overflow: hidden;
 	position: relative;
 }
 
-.jspPane
-{
+.jspPane {
 	position: absolute;
 }
 
-.jspVerticalBar
-{
+.jspVerticalBar {
 	background: none;
 	height: 100%;
 	position: absolute;
@@ -26,8 +24,7 @@
 	width: 1px;
 }
 
-.jspHorizontalBar
-{
+.jspHorizontalBar {
 	background: none;
 	bottom: 0;
 	height: 35px;
@@ -36,25 +33,21 @@
 	width: 100%;
 }
 
-.jspCap
-{
+.jspCap {
 	display: none;
 }
 
-.jspHorizontalBar .jspCap
-{
+.jspHorizontalBar .jspCap {
 	float: left;
 }
 
-.jspTrack
-{
+.jspTrack {
 	background: none;
 	position: relative;
 }
 
-.jspDrag
-{
-	background: #B1B1BA;
+.jspDrag {
+	background: #b1b1ba;
 	opacity: 0.45;
 	cursor: pointer;
 	left: -16px;
@@ -66,61 +59,52 @@
 
 	&:hover {
 		opacity: 1;
-		@extend .transition-opacity;
 	}
 }
 
 .jspHorizontalBar .jspTrack,
-.jspHorizontalBar .jspDrag
-{
+.jspHorizontalBar .jspDrag {
 	float: left;
 	height: 100%;
 }
 
-.jspArrow
-{
+.jspArrow {
 	background: #50506d;
 	cursor: pointer;
-        direction: ltr;
+	direction: ltr;
 	display: block;
 	margin: 0;
 	padding: 0;
 	text-indent: -20000px;
 }
 
-.jspDisabled
-{
+.jspDisabled {
 	background: #80808d;
 	cursor: default;
 }
 
-.jspVerticalBar .jspArrow
-{
+.jspVerticalBar .jspArrow {
 	height: 16px;
 }
 
-.jspHorizontalBar .jspArrow
-{
+.jspHorizontalBar .jspArrow {
 	float: left;
 	height: 100%;
 	width: 16px;
 }
 
-.jspVerticalBar .jspArrow:focus
-{
-        border: 1px solid red;
+.jspVerticalBar .jspArrow:focus {
+	border: 1px solid red;
 	outline: none;
 }
 
-.jspCorner
-{
+.jspCorner {
 	background: #eeeef4;
 	float: left;
 	height: 100%;
 }
 
 /* Yuk! CSS Hack for IE6 3 pixel bug :( */
-* html .jspCorner
-{
+* html .jspCorner {
 	margin: 0 -3px 0 0;
 }

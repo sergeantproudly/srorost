@@ -1,19 +1,21 @@
+@use "settings" as *;
+
 .es {
 	position: relative;
 	width: 302px;
 	height: 50px;
 
 	&:before {
-		content: '';
-		position: absolute;	
+		content: "";
+		position: absolute;
 		top: 20px;
 		right: 16px;
 		width: 0;
 		height: 0;
 		border-width: 6px 5px;
 		border-style: solid;
-		border-color: transparent;	
-    	border-top-color: $background-color-blue;
+		border-color: transparent;
+		border-top-color: $background-color-blue;
 	}
 
 	input.es-input {
@@ -28,8 +30,12 @@
 		@include radius(3px);
 
 		&.open {
-			-webkit-border-bottom-left-radius: 0; -moz-border-radius-bottomleft: 0; border-bottom-left-radius: 0;
-			-webkit-border-bottom-right-radius: 0; -moz-border-radius-bottomright: 0; border-bottom-right-radius: 0; 
+			-webkit-border-bottom-left-radius: 0;
+			-moz-border-radius-bottomleft: 0;
+			border-bottom-left-radius: 0;
+			-webkit-border-bottom-right-radius: 0;
+			-moz-border-radius-bottomright: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		& + i {
@@ -38,12 +44,12 @@
 	}
 
 	.es-list {
-		position: absolute; 
+		position: absolute;
 		padding: 0;
-		margin: 0; 
-		border: 0; 
-		display: none; 
-		z-index: 1000; 
+		margin: 0;
+		border: 0;
+		display: none;
+		z-index: 1000;
 		background: #fff;
 		min-width: 370px;
 		max-height: 350px;
@@ -52,13 +58,13 @@
 		@include radius(3px);
 
 		.es-list-item {
-			display: block; 
+			display: block;
 			padding: 10px 16px 9px;
 			margin: 0;
 			font-size: 16px;
 			font-weight: 400;
 			color: #000;
-			border-top: 1px solid #D4D4D4;
+			border-top: 1px solid #d4d4d4;
 			position: relative;
 			cursor: pointer;
 
@@ -68,10 +74,10 @@
 
 			&.selected {
 				&:after {
-					content: '';
+					content: "";
 					width: 12px;
 					height: 10px;
-					background-image: url('../../images/ico_v_select.svg');
+					background-image: url("../../images/ico_v_select.svg");
 					position: absolute;
 					top: 20px;
 					right: 16px;
@@ -80,7 +86,7 @@
 			}
 
 			&:hover {
-				background: #F6F6F6;
+				background: #f6f6f6;
 			}
 
 			&[disabled] {

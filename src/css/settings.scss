@@ -1,25 +1,26 @@
-$font-main: 'Geometria', 'Arial';
-$background-color-gray: #B8B8B8;
-$background-color-lightgray: #F3F5F8;
-$background-color-blue: #0F62CA;
+@use "sass:color";
+$font-main: "Geometria", "Arial";
+$background-color-gray: #b8b8b8;
+$background-color-lightgray: #f3f5f8;
+$background-color-blue: #0f62ca;
 $color-text: #373737;
-$color-text-blue: #206CDE;
-$color-text-headers: #303C48;
-$color-text-links: #FC4D5A;
-$color-button: #F64848;
-$color-button-hover: #E73E3E;
-$color-button-active: #C83333;
-$color-button-disabled: #F64848;
-$color-button-text: #FFF;
-$color-button-text-hover: #FFF;
-$color-button-text-active: #FFF;
+$color-text-blue: #206cde;
+$color-text-headers: #303c48;
+$color-text-links: #fc4d5a;
+$color-button: #f64848;
+$color-button-hover: #e73e3e;
+$color-button-active: #c83333;
+$color-button-disabled: #f64848;
+$color-button-text: #fff;
+$color-button-text-hover: #fff;
+$color-button-text-active: #fff;
 $color-button-text-disabled: #f97f7f;
 $color-button2: #fff;
 $color-button2-hover: #fff;
 $color-button2-active: #fff;
 $color-button2-disabled: #fff;
 $color-button2-text: #515151;
-$color-button2-text-hover: #206CDE;
+$color-button2-text-hover: #206cde;
 $color-button2-text-active: #515151;
 $color-button2-text-disabled: #cbcbcb;
 $padding-edges: 2.34%;
@@ -34,7 +35,7 @@ $adaptive-width-tablet-small: 600px;
 $adaptive-width-mobile: 540px;
 
 @mixin radius($radius) {
-    -moz-border-radius: $radius;
+	-moz-border-radius: $radius;
 	-webkit-border-radius: $radius;
 	-khtml-border-radius: $radius;
 	border-radius: $radius;
@@ -60,20 +61,20 @@ $adaptive-width-mobile: 540px;
 	border-bottom-right-radius: $radius;
 }
 @mixin radius-t($radius) {
-    @include radius-lt($radius);
-    @include radius-rt($radius);
+	@include radius-lt($radius);
+	@include radius-rt($radius);
 }
 @mixin radius-l($radius) {
-    @include radius-lt($radius);
-    @include radius-lb($radius);
+	@include radius-lt($radius);
+	@include radius-lb($radius);
 }
 @mixin radius-r($radius) {
-    @include radius-rt($radius);
-    @include radius-rb($radius);
+	@include radius-rt($radius);
+	@include radius-rb($radius);
 }
 @mixin radius-b($radius) {
-    @include radius-lb($radius);
-    @include radius-rb($radius);
+	@include radius-lb($radius);
+	@include radius-rb($radius);
 }
 @mixin box-shadow($a, $b, $c, $d) {
 	box-shadow: $a $b $c $d;
@@ -87,7 +88,7 @@ $adaptive-width-mobile: 540px;
 }
 @mixin flex-cancel() {
 	display: block;
-    flex: 0 0 auto;
+	flex: 0 0 auto;
 }
 
 %padding-edges {
@@ -163,17 +164,19 @@ $adaptive-width-mobile: 540px;
 .wrap {
 	position: relative;
 }
-blockquote, q{
+blockquote,
+q {
 	quotes: none;
 }
 blockquote::before,
 blockquote::after,
 q::before,
-q::after{
-	content: '';
+q::after {
+	content: "";
 	content: none;
 }
-b,strong{
+b,
+strong {
 	font-weight: 700;
 }
 .btn {
@@ -186,9 +189,9 @@ b,strong{
 	border: 0;
 	cursor: pointer;
 	font-family: $font-main;
+	@extend .transition-all;
 	@include box-shadow(0px, 12px, 45px, rgba(252, 77, 90, 0.42));
 	@include radius(4px);
-	@extend .transition-all;
 
 	&:hover {
 		background-color: $color-button-hover;
@@ -197,7 +200,7 @@ b,strong{
 	}
 
 	&:active {
-		background-color: $color-button-active;	
+		background-color: $color-button-active;
 		color: $color-button-text-active;
 		@extend .transition-all;
 	}
@@ -231,7 +234,7 @@ b,strong{
 		}
 
 		&:active {
-			background-color: $color-button2-active;	
+			background-color: $color-button2-active;
 			color: $color-button2-text-active;
 		}
 
@@ -256,33 +259,33 @@ b,strong{
 		font-weight: 400;
 		background-color: transparent;
 		color: #454545;
-		border: 1px solid #E0E0E0;
+		border: 1px solid #e0e0e0;
 		@include box-shadow-cancel();
 
 		&:hover {
-			border-color: darken(#E0E0E0, 20%);
-			color: darken(#454545, 20%);
+			border-color: color.adjust(#e0e0e0, $lightness: -20%);
+			color: color.adjust(#454545, $lightness: -20%);
 		}
 
 		&:active {
-			border-color: darken(#E0E0E0, 25%);
-			color: darken(#454545, 25%);
+			border-color: color.adjust(#e0e0e0, $lightness: -25%);
+			color: color.adjust(#454545, $lightness: -25%);
 		}
 	}
 }
-.dashed{
+.dashed {
 	cursor: pointer;
 	border-bottom: 1px dashed;
 }
-.dotted{
+.dotted {
 	cursor: pointer;
 	border-bottom: 1px dotted;
 }
-a.dashed{
+a.dashed {
 	text-decoration: none;
 	border-bottom: 1px dashed;
 }
-a.dotted{
+a.dotted {
 	text-decoration: none;
 	border-bottom: 1px dotted;
 }
@@ -325,46 +328,46 @@ a.dotted{
 	-webkit-user-select: none;
 }
 .transition-all {
-    -webkit-transition: all $animation-speed ease;
-   	-moz-transition: all $animation-speed ease;
-   	-o-transition: all $animation-speed ease;
-    transition: all $animation-speed ease;
+	-webkit-transition: all $animation-speed ease;
+	-moz-transition: all $animation-speed ease;
+	-o-transition: all $animation-speed ease;
+	transition: all $animation-speed ease;
 }
 .transition-color {
-    -webkit-transition: color $animation-speed ease;
-   	-moz-transition: color $animation-speed ease;
-   	-o-transition: color $animation-speed ease;
-    transition: color $animation-speed ease;
+	-webkit-transition: color $animation-speed ease;
+	-moz-transition: color $animation-speed ease;
+	-o-transition: color $animation-speed ease;
+	transition: color $animation-speed ease;
 }
 .transition-bg {
-    -webkit-transition: background-color $animation-speed ease;
-   	-moz-transition: background-color $animation-speed ease;
-   	-o-transition: background-color $animation-speed ease;
-    transition: background-color $animation-speed ease;
+	-webkit-transition: background-color $animation-speed ease;
+	-moz-transition: background-color $animation-speed ease;
+	-o-transition: background-color $animation-speed ease;
+	transition: background-color $animation-speed ease;
 }
 .transition-border {
-    -webkit-transition: border-color $animation-speed ease;
-   	-moz-transition: border-color $animation-speed ease;
-   	-o-transition: border-color $animation-speed ease;
-    transition: border-color $animation-speed ease;
+	-webkit-transition: border-color $animation-speed ease;
+	-moz-transition: border-color $animation-speed ease;
+	-o-transition: border-color $animation-speed ease;
+	transition: border-color $animation-speed ease;
 }
 .transition-opacity {
-    -webkit-transition: opacity $animation-speed ease;
-   	-moz-transition: opacity $animation-speed ease;
-   	-o-transition: opacity $animation-speed ease;
-    transition: opacity $animation-speed ease;
+	-webkit-transition: opacity $animation-speed ease;
+	-moz-transition: opacity $animation-speed ease;
+	-o-transition: opacity $animation-speed ease;
+	transition: opacity $animation-speed ease;
 }
 .transition-padding-top {
 	-webkit-transition: padding-top $animation-speed ease;
-   	-moz-transition: padding-top $animation-speed ease;
-   	-o-transition: padding-top $animation-speed ease;
-    transition: padding-top $animation-speed ease;
+	-moz-transition: padding-top $animation-speed ease;
+	-o-transition: padding-top $animation-speed ease;
+	transition: padding-top $animation-speed ease;
 }
 .transition-none {
-    -webkit-transition: none;
-   	-moz-transition: none;
-   	-o-transition: none;
-    transition: none;
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
 }
 .rotate-180-start {
 	-moz-transform: rotate(0deg);
@@ -398,14 +401,14 @@ a.dotted{
 	overflow: hidden;
 
 	&:after {
-		content: '';
+		content: "";
 		display: block;
 		position: absolute;
 		top: 0;
 		right: 0;
 		width: 45%;
 		height: 100%;
-		background: linear-gradient(90deg, rgba(255, 255, 255, 0.0001) 0%, #FFFFFF 100%);
+		background: linear-gradient(90deg, rgba(255, 255, 255, 0.0001) 0%, #ffffff 100%);
 	}
 
 	&.scrolled-full {
@@ -419,18 +422,38 @@ a.dotted{
 }
 .rotation360 {
 	-webkit-animation: rotation360 1.5s infinite linear;
-    -moz-animation: rotation360 1.5s infinite linear;
-    -ms-animation: rotation360 1.5s infinite linear;
-    -o-animation: rotation360 1.5s infinite linear;
-    animation: rotation360 1.5s infinite linear; 
-    -webkit-backface-visibility: hidden;
-    transform: translate3d(0,0,0);
+	-moz-animation: rotation360 1.5s infinite linear;
+	-ms-animation: rotation360 1.5s infinite linear;
+	-o-animation: rotation360 1.5s infinite linear;
+	animation: rotation360 1.5s infinite linear;
+	-webkit-backface-visibility: hidden;
+	transform: translate3d(0, 0, 0);
 }
-@-webkit-keyframes rotation360 { to { -webkit-transform: rotate(360deg); }}
-@-moz-keyframes rotation360 { to { -moz-transform: rotate(360deg); }}
-@-ms-keyframes rotation360 { to { -ms-transform: rotate(360deg); }}
-@-o-keyframes rotation360 { to { -o-transform: rotate(360deg); }}
-@keyframes rotation360 { to { transform: rotate(360deg); }}
+@-webkit-keyframes rotation360 {
+	to {
+		-webkit-transform: rotate(360deg);
+	}
+}
+@-moz-keyframes rotation360 {
+	to {
+		-moz-transform: rotate(360deg);
+	}
+}
+@-ms-keyframes rotation360 {
+	to {
+		-ms-transform: rotate(360deg);
+	}
+}
+@-o-keyframes rotation360 {
+	to {
+		-o-transform: rotate(360deg);
+	}
+}
+@keyframes rotation360 {
+	to {
+		transform: rotate(360deg);
+	}
+}
 
 .slick-dots {
 	text-align: center !important;
@@ -442,7 +465,7 @@ a.dotted{
 	flex: 0 0 auto !important;
 	display: block !important;
 
-	&>li {
+	& > li {
 		display: inline-block !important;
 		width: 10px !important;
 		height: 10px !important;
@@ -456,7 +479,7 @@ a.dotted{
 		opacity: 0.2;
 		background: none !important;
 		min-height: 0 !important;
-		box-shadow: 0px 0px 0px rgba(0,0,0,0) !important;
+		box-shadow: 0px 0px 0px rgba(0, 0, 0, 0) !important;
 		flex: 0 0 auto !important;
 		@extend .transition-opacity;
 
@@ -465,7 +488,7 @@ a.dotted{
 			padding-left: 8px !important;
 		}
 
-		&:last-child{
+		&:last-child {
 			padding-right: 8px !important;
 		}
 
@@ -476,20 +499,19 @@ a.dotted{
 
 		&:hover {
 			opacity: 0.5;
-			@extend .transition-opacity;
 		}
 
 		&.slick-active {
 			opacity: 1;
 			@extend .transition-opacity;
 
-			&>button {
-				background-color: #206CDE;
+			& > button {
+				background-color: #206cde;
 			}
 		}
 
-		&>button {
-			content: '';
+		& > button {
+			content: "";
 			display: block;
 			position: absolute;
 			top: 7px;
@@ -497,11 +519,11 @@ a.dotted{
 			width: 10px;
 			height: 10px;
 			padding: 0;
-			@include radius(10px);
-			background: #206CDE;
+			background: #206cde;
 			font-size: 0;
-			border: 0; 
+			border: 0;
 			cursor: pointer;
+			@include radius(10px);
 		}
 	}
 }

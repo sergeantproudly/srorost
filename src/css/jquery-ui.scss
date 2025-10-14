@@ -1,3 +1,6 @@
+@use "settings" as *;
+@use "sass:color";
+
 .ui-draggable-handle {
 	-ms-touch-action: none;
 	touch-action: none;
@@ -45,13 +48,12 @@
 	left: 0;
 	position: absolute;
 	opacity: 0;
-	filter:Alpha(Opacity=0); /* support: IE8 */
+	filter: Alpha(Opacity=0); /* support: IE8 */
 }
 
 .ui-front {
 	z-index: 100;
 }
-
 
 /* Interaction Cues
 ----------------------------------*/
@@ -60,13 +62,12 @@
 	pointer-events: none;
 }
 
-
 /* Icons
 ----------------------------------*/
 .ui-icon {
 	display: inline-block;
 	vertical-align: middle;
-	margin-top: -.25em;
+	margin-top: -0.25em;
 	position: relative;
 	text-indent: -99999px;
 	overflow: hidden;
@@ -210,7 +211,7 @@
 .ui-menu .ui-state-active {
 	/*margin: -1px;*/
 }
-.ui-select-overflow{
+.ui-select-overflow {
 	max-height: 250px;
 	max-width: 500px;
 }
@@ -228,7 +229,7 @@
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: .2em;
+	left: 0.2em;
 	margin: auto 0;
 }
 
@@ -238,11 +239,11 @@
 	right: 0;
 }
 .ui-button {
-	padding: .4em 1em;
+	padding: 0.4em 1em;
 	display: inline-block;
 	position: relative;
 	line-height: normal;
-	margin-right: .1em;
+	margin-right: 0.1em;
 	cursor: pointer;
 	vertical-align: middle;
 	text-align: center;
@@ -291,7 +292,6 @@ input.ui-button.ui-button-icon-only {
 	height: 2.1em;
 	text-indent: -9999px;
 	white-space: nowrap;
-
 }
 
 input.ui-button.ui-icon-notext .ui-icon {
@@ -299,7 +299,7 @@ input.ui-button.ui-icon-notext .ui-icon {
 	height: auto;
 	text-indent: 0;
 	white-space: normal;
-	padding: .4em 1em;
+	padding: 0.4em 1em;
 }
 
 /* workarounds */
@@ -334,7 +334,7 @@ button.ui-button::-moz-focus-inner {
 	box-sizing: border-box;
 }
 .ui-controlgroup .ui-controlgroup-label {
-	padding: .4em 1em;
+	padding: 0.4em 1em;
 }
 .ui-controlgroup .ui-controlgroup-label span {
 	font-size: 80%;
@@ -354,10 +354,9 @@ button.ui-button::-moz-focus-inner {
 
 /* Spinner specific style fixes */
 .ui-controlgroup-vertical .ui-spinner-input {
-
 	/* Support: IE8 only, Android < 4.4 only */
 	width: 75%;
-	width: calc( 100% - 2.4em );
+	width: calc(100% - 2.4em);
 }
 .ui-controlgroup-vertical .ui-spinner .ui-spinner-up {
 	border-top-style: solid;
@@ -372,18 +371,18 @@ button.ui-button::-moz-focus-inner {
 	text-align: left;
 	position: relative;
 }
-										
+
 .ui-checkboxradio-label .ui-icon-background {
 	width: 20px;
 	height: 20px;
 	background-color: #fff;
-	@include radius(3px);
 	margin: -2px 10px 0 0;
 	vertical-align: middle;
 	position: relative;
 	top: 0;
 	left: 0;
-	border: 1px solid #C5C5C5;
+	border: 1px solid #c5c5c5;
+	@include radius(3px);
 }
 .ui-checkboxradio-icon-space {
 	display: none;
@@ -392,12 +391,12 @@ button.ui-button::-moz-focus-inner {
 	background-color: $background-color-blue;
 	border-color: $background-color-blue;
 }
-.ui-checkboxradio-label .ui-icon-background.ui-state-checked::after{
-	content: '';
+.ui-checkboxradio-label .ui-icon-background.ui-state-checked::after {
+	content: "";
 	position: absolute;
 	top: 5px;
 	left: 4px;
-	background: url('../images/ico_cb_v.svg');
+	background: url("../images/ico_cb_v.svg");
 	width: 11px;
 	height: 9px;
 }
@@ -412,13 +411,13 @@ button.ui-button::-moz-focus-inner {
 .ui-checkboxradio-radio-label .ui-icon-background {
 	width: 25px;
 	height: 25px;
-	border: 1px solid #C5C5C5;
+	border: 1px solid #c5c5c5;
 	border-radius: 25px;
 	overflow: visible;
 	@extend .transition-border;
 
 	&:hover {
-		border-color: darken(#C5C5C5, 15%);
+		border-color: color.adjust(#c5c5c5, $lightness: -15%);
 		@extend .transition-border;
 	}
 }
@@ -426,14 +425,14 @@ button.ui-button::-moz-focus-inner {
 .ui-checkboxradio-radio-label.ui-checkboxradio-checked:hover .ui-icon {
 	position: relative;
 }
-.ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon::after{
-	content: '';
+.ui-checkboxradio-radio-label.ui-checkboxradio-checked .ui-icon::after {
+	content: "";
 	position: absolute;
 	top: 5px;
 	left: 5px;
 	width: 13px;
 	height: 13px;
-	background: #1261C2;
+	background: #1261c2;
 	-moz-border-radius: 13px;
 	-webkit-border-radius: 13px;
 	-khtml-border-radius: 13px;
@@ -449,8 +448,8 @@ button.ui-button::-moz-focus-inner {
 	background: #fff;
 	padding: 0 35px 15px;
 	-webkit-box-shadow: 0px 3px 37px 0px rgba(0, 0, 0, 0.17);
-	-moz-box-shadow:    0px 3px 37px 0px rgba(0, 0, 0, 0.17);
-	box-shadow:         0px 3px 37px 0px rgba(0, 0, 0, 0.17);
+	-moz-box-shadow: 0px 3px 37px 0px rgba(0, 0, 0, 0.17);
+	box-shadow: 0px 3px 37px 0px rgba(0, 0, 0, 0.17);
 }
 .ui-datepicker .ui-datepicker-header {
 	position: relative;
@@ -503,7 +502,7 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker select.ui-datepicker-year {
 	width: 45%;
 }
-.ui-datepicker select.ui-datepicker-year{
+.ui-datepicker select.ui-datepicker-year {
 	margin-left: 15px;
 }
 .ui-datepicker table {
@@ -516,10 +515,10 @@ button.ui-button::-moz-focus-inner {
 	position: relative;
 }
 .ui-datepicker table th,
-.ui-datepicker table td{
+.ui-datepicker table td {
 	text-align: center;
 }
-.ui-datepicker table>thead>tr>th{
+.ui-datepicker table > thead > tr > th {
 	color: #9e9e9e;
 	text-transform: uppercase;
 	cursor: default;
@@ -528,7 +527,7 @@ button.ui-button::-moz-focus-inner {
 	font-size: 11px;
 }
 .ui-datepicker th {
-	padding: .7em .3em;
+	padding: 0.7em 0.3em;
 	text-align: center;
 	font-weight: bold;
 	border: 0;
@@ -540,7 +539,7 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker td span,
 .ui-datepicker td a {
 	display: block;
-	padding: .2em;
+	padding: 0.2em;
 	text-align: center;
 	text-decoration: none;
 	border: 1px solid transparent;
@@ -549,28 +548,28 @@ button.ui-button::-moz-focus-inner {
 	-khtml-border-radius: 30px;
 	border-radius: 30px;
 }
-.ui-datepicker td a:hover{
+.ui-datepicker td a:hover {
 	border: 1px solid #dedede;
 }
 .ui-datepicker td a.ui-state-active,
-.ui-datepicker td a.ui-state-active:hover{
+.ui-datepicker td a.ui-state-active:hover {
 	background: #687490;
 	border: 1px solid #687490;
 	color: #fff;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
 	background-image: none;
-	margin: .7em 0 0 0;
-	padding: 0 .2em;
+	margin: 0.7em 0 0 0;
+	padding: 0 0.2em;
 	border-left: 0;
 	border-right: 0;
 	border-bottom: 0;
 }
 .ui-datepicker .ui-datepicker-buttonpane button {
 	float: right;
-	margin: .5em .2em .4em;
+	margin: 0.5em 0.2em 0.4em;
 	cursor: pointer;
-	padding: .2em .6em .3em .6em;
+	padding: 0.2em 0.6em 0.3em 0.6em;
 	width: auto;
 	overflow: visible;
 }
@@ -587,7 +586,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-datepicker-multi .ui-datepicker-group table {
 	width: 95%;
-	margin: 0 auto .4em;
+	margin: 0 auto 0.4em;
 }
 .ui-datepicker-multi-2 .ui-datepicker-group {
 	width: 50%;
@@ -653,23 +652,23 @@ button.ui-button::-moz-focus-inner {
 	text-indent: -99999px;
 	overflow: hidden;
 	background-repeat: no-repeat;
-	left: .5em;
-	top: .3em;
+	left: 0.5em;
+	top: 0.3em;
 }
 .ui-dialog {
 	position: absolute;
 	top: 0;
 	left: 0;
-	padding: .2em;
+	padding: 0.2em;
 	outline: 0;
 }
 .ui-dialog .ui-dialog-titlebar {
-	padding: .4em 1em;
+	padding: 0.4em 1em;
 	position: relative;
 }
 .ui-dialog .ui-dialog-title {
 	float: left;
-	margin: .1em 0;
+	margin: 0.1em 0;
 	white-space: nowrap;
 	width: 90%;
 	overflow: hidden;
@@ -677,7 +676,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-dialog .ui-dialog-titlebar-close {
 	position: absolute;
-	right: .3em;
+	right: 0.3em;
 	top: 50%;
 	width: 20px;
 	margin: -10px 0 0 0;
@@ -687,7 +686,7 @@ button.ui-button::-moz-focus-inner {
 .ui-dialog .ui-dialog-content {
 	position: relative;
 	border: 0;
-	padding: .5em 1em;
+	padding: 0.5em 1em;
 	background: none;
 	overflow: auto;
 }
@@ -695,14 +694,14 @@ button.ui-button::-moz-focus-inner {
 	text-align: left;
 	border-width: 1px 0 0 0;
 	background-image: none;
-	margin-top: .5em;
-	padding: .3em 1em .5em .4em;
+	margin-top: 0.5em;
+	padding: 0.3em 1em 0.5em 0.4em;
 }
 .ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
 	float: right;
 }
 .ui-dialog .ui-dialog-buttonpane button {
-	margin: .5em .4em .5em 0;
+	margin: 0.5em 0.4em 0.5em 0;
 	cursor: pointer;
 }
 .ui-dialog .ui-resizable-n {
@@ -778,31 +777,31 @@ button.ui-button::-moz-focus-inner {
 	overflow: auto;
 	overflow-x: hidden;
 	background: #fff;
+	border: 1px solid #dbe0e6;
 	@include radius-b(3px);
-	border: 1px solid #DBE0E6;
 }
-.ui-selectmenu-menu .ui-menu li{
+.ui-selectmenu-menu .ui-menu li {
 	padding: 10px 35px 10px 11px;
 	margin: 0;
 	font-size: 16px;
-	border-top: 1px solid #DBE0E6;
+	border-top: 1px solid #dbe0e6;
 	color: #151515;
 	position: relative;
 }
 .ui-selectmenu-menu .ui-menu li:first-child {
 	border: 0;
 }
-.ui-selectmenu-menu .ui-menu li::before{
+.ui-selectmenu-menu .ui-menu li::before {
 	display: none;
 }
-.ui-selectmenu-menu .ui-menu li:hover{
-	background: #F4F7F9;
+.ui-selectmenu-menu .ui-menu li:hover {
+	background: #f4f7f9;
 }
 .ui-selectmenu-menu .ui-menu li .ui-state-active::after {
-	content: '';
+	content: "";
 	width: 14px;
 	height: 11px;
-	background-image: url('../images/ico_select_v.svg');
+	background-image: url("../images/ico_select_v.svg");
 	display: block;
 	position: absolute;
 	top: 8px;
@@ -833,7 +832,7 @@ button.ui-button::-moz-focus-inner {
 	text-overflow: ellipsis;
 
 	&.placeholder {
-		color: #AFAFAF;
+		color: #afafaf;
 	}
 }
 .ui-selectmenu-button.ui-button {
@@ -856,7 +855,7 @@ button.ui-button::-moz-focus-inner {
 		font-size: 16px;
 	}
 }
-.ui-selectmenu-icon.ui-icon.ui-icon-triangle-1-s{
+.ui-selectmenu-icon.ui-icon.ui-icon-triangle-1-s {
 	width: 0;
 	height: 0;
 	border-width: 6px 5px;
@@ -882,7 +881,7 @@ button.ui-button::-moz-focus-inner {
 .ui-slider .ui-slider-range {
 	position: absolute;
 	z-index: 1;
-	font-size: .7em;
+	font-size: 0.7em;
 	display: block;
 	border: 0;
 	background-position: 0 0;
@@ -895,11 +894,11 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-slider-horizontal {
-	height: .8em;
+	height: 0.8em;
 }
 .ui-slider-horizontal .ui-slider-handle {
-	top: -.3em;
-	margin-left: -.6em;
+	top: -0.3em;
+	margin-left: -0.6em;
 }
 .ui-slider-horizontal .ui-slider-range {
 	top: 0;
@@ -913,13 +912,13 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-slider-vertical {
-	width: .8em;
+	width: 0.8em;
 	height: 100px;
 }
 .ui-slider-vertical .ui-slider-handle {
-	left: -.3em;
+	left: -0.3em;
 	margin-left: 0;
-	margin-bottom: -.6em;
+	margin-bottom: -0.6em;
 }
 .ui-slider-vertical .ui-slider-range {
 	left: 0;
@@ -932,7 +931,7 @@ button.ui-button::-moz-focus-inner {
 	top: 0;
 }
 .ui-tabs {
-	position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+	position: relative; /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 }
 .ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
 	cursor: pointer;
@@ -951,17 +950,16 @@ body .ui-tooltip {
 }
 
 /* Switcher ui */
-.ui-switcher{
-    cursor: pointer;
-    height: 32px;
-    box-sizing: border-box;
-    display: -moz-inline-stack;
+.ui-switcher {
+	cursor: pointer;
+	height: 32px;
+	box-sizing: border-box;
+	display: -moz-inline-stack;
 	display: inline-block;
 	zoom: 1;
 	*display: inline;
-	
 }
-.ui-switcher .button{
+.ui-switcher .button {
 	display: -moz-inline-stack;
 	display: inline-block;
 	zoom: 1;
@@ -971,37 +969,37 @@ body .ui-tooltip {
 	height: 32px;
 	box-sizing: border-box;
 	-webkit-transition: all 0.35s ease;
-   	-moz-transition: all 0.35s ease;
-   	-o-transition: all 0.35s ease;
-    transition: all 0.35s ease;
-    text-align: center;
+	-moz-transition: all 0.35s ease;
+	-o-transition: all 0.35s ease;
+	transition: all 0.35s ease;
+	text-align: center;
 }
-.ui-switcher .button:first-child{
+.ui-switcher .button:first-child {
 	-moz-border-radius-topleft: 16px;
 	-webkit-border-top-left-radius: 16px;
-	 border-top-left-radius: 16px;
+	border-top-left-radius: 16px;
 	-moz-border-radius-bottomleft: 16px;
 	-webkit-border-bottom-left-radius: 16px;
 	border-bottom-left-radius: 16px;
 	border-right: 0;
 	padding-right: 14px;
 }
-.ui-switcher .button + .button{
+.ui-switcher .button + .button {
 	border-left: 0;
 	-moz-border-radius-topright: 16px;
 	-webkit-border-top-right-radius: 16px;
-	 border-top-right-radius: 16px;
+	border-top-right-radius: 16px;
 	-moz-border-radius-bottomright: 16px;
 	-webkit-border-bottom-right-radius: 16px;
 	border-bottom-right-radius: 16px;
 	padding-left: 14px;
 }
-.ui-switcher .button.checked{
+.ui-switcher .button.checked {
 	background: #ddb409;
 	border-color: #ddb409;
 	color: #fff;
 	-webkit-transition: all 0.35s ease;
-   	-moz-transition: all 0.35s ease;
-   	-o-transition: all 0.35s ease;
-    transition: all 0.35s ease;
+	-moz-transition: all 0.35s ease;
+	-o-transition: all 0.35s ease;
+	transition: all 0.35s ease;
 }

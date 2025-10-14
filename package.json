@@ -2,23 +2,24 @@
   "name": "srorost",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "gulpfile.js",
+  "type": "module",
   "dependencies": {
-    "del": "^4.0.0",
-    "gulp": "^4.0.0"
+    "del": "^8.0.1",
+    "gulp": "^5.0.1"
   },
   "devDependencies": {
-    "browser-sync": "^2.26.3",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-clean-css": "^4.0.0",
+    "browser-sync": "^3.0.4",
+    "gulp-autoprefixer": "^10.0.0",
+    "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-imagemin": "^5.0.3",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5",
+    "gulp-imagemin": "^9.1.0",
+    "gulp-sass": "^6.0.1",
+    "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify": "^3.0.2",
-    "imagemin-pngquant": "^7.0.0",
-    "node-sass": "^4.11.0",
-    "normalize.css": "^8.0.1"
+    "imagemin-pngquant": "^10.0.0",
+    "normalize.css": "^8.0.1",
+    "sass": "^1.93.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
