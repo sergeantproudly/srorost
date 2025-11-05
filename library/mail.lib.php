@@ -88,7 +88,8 @@ class Mail {
 
     if ($headers != null) { $email .= $headers . $this->newline; }
 
-    $email .= "Subject: $subject" . $this->newline;
+    //$email .= "Subject: $subject" . $this->newline;
+    $email .= "Subject: =?utf-8?b?".base64_encode($subject)."?=" . $this->newline;
     $email .= "MIME-Version: 1.0" . $this->newline;
     if($this->contentType == "multipart/mixed") {
       $boundary = $this->generateBoundary();

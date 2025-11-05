@@ -281,11 +281,13 @@ class blocks extends krn_abstract{
 	}
 
 	/** Блок - Партнеры */
-	public function BlockPartners($code) {
+	public function BlockPartners($code, $data) {
 		if ($this->flag) {
 			$this->flag = false;
 			return '';
 		}
+
+		$outputPartnersAsCompanies = $this->settings->GetSetting('PartnersAsCompanies');
 
 		$elementFolder = LoadTemplate('bl_partners_folder');
 		$element = LoadTemplate('bl_partners_folder_el');
@@ -297,16 +299,61 @@ class blocks extends krn_abstract{
 		if (isset($this->blocks_info['partners_controls'])) {
 			$content['partners_controls'] = '';
 		}
-		$query = 'SELECT Title, Image140_90 AS Image, Link, IsControl FROM partners ' . (!isset($content['partners_sro']) ? 'WHERE IsControl = 1' : (!isset($content['partners_controls']) ? 'WHERE IsControl = 0' : '')) . ' ORDER BY IF(`Order`,-100/`Order`,0), Title';
-		$partners = $this->db->getAll($query);
-		foreach ($partners as $partner) {
-			$content[$partner['IsControl'] ? 'partners_controls' : 'partners_sro'] .= strtr($element, array(
-				'<%TITLE%>'	=> $partner['Title'],
-				'<%ALT%>'	=> htmlspecialchars($partner['Title'], ENT_QUOTES),
-				'<%IMAGE%>'	=> $partner['Image'],
-				'<%LINK%>'	=> $partner['Link'],
-			));
-		}	
+
+		// старый способ вывода компаний
+		if (!$outputPartnersAsCompanies) {
+			$query = 'SELECT Title, Image140_90 AS Image, Link, IsControl FROM partners ' . (!isset($content['partners_sro']) ? 'WHERE IsControl = 1' : (!isset($content['partners_controls']) ? 'WHERE IsControl = 0' : '')) . ' ORDER BY IF(`Order`,-100/`Order`,0), Title';
+			$partners = $this->db->getAll($query);
+			foreach ($partners as $partner) {
+				$content[$partner['IsControl'] ? 'partners_controls' : 'partners_sro'] .= strtr($element, array(
+					'<%TITLE%>'	=> $partner['Title'],
+					'<%ALT%>'	=> htmlspecialchars($partner['Title'], ENT_QUOTES),
+					'<%IMAGE%>'	=> $partner['Image'],
+					'<%LINK%>'	=> $partner['Link'],
+				));
+			}
+
+		// новый способ вывода компаний
+		} else {
+			$params = $this->GetBlockParams($code);
+			if ($params['Srotype']) $sroTypeId = $params['Srotype'];
+			elseif ($params['Type']) $sroTypeId = $params['Type'];
+
+			if (isset($sroTypeId) && $sroTypeId) {
+				$query = 'SELECT Title, Code, Image140_75 AS Image, CityId, RegionId FROM sro_companies WHERE IsActive = 1' 
+					. ' AND TypeId = ' . $sroTypeId 
+					. ' ORDER BY' . ($_SESSION['ClientUser']['City']['Id'] ? ' IF(`CityId`='.$_SESSION['ClientUser']['City']['Id'].', 0, 1),' : '') . ($_SESSION['ClientUser']['City']['RegionId'] ? ' IF(`RegionId`='.$_SESSION['ClientUser']['City']['RegionId'].', 0, 1),' : '') . ' IF(`Order`, -1000/`Order`, 0) '
+					.' LIMIT 0, 5';
+				$partners = $this->db->getAll($query);
+			} else {
+				$query = 'SELECT Title, Code, Image140_75 AS Image, CityId, RegionId FROM sro_companies WHERE IsActive = 1 AND TypeId = ?i'
+					. ' ORDER BY' . ($_SESSION['ClientUser']['City']['Id'] ? ' IF(`CityId`='.$_SESSION['ClientUser']['City']['Id'].', 0, 1),' : '') . ($_SESSION['ClientUser']['City']['RegionId'] ? ' IF(`RegionId`='.$_SESSION['ClientUser']['City']['RegionId'].', 0, 1),' : '') . ' IF(`Order`, -1000/`Order`, 0) '
+					.' LIMIT 0, ?i';
+				$partners = $this->db->getAll($query, SRO_BUILDERS_TYPE_ID, 2);
+				$partners = array_merge($partners, $this->db->getAll($query, SRO_PROJECTERS_TYPE_ID, 2));
+				$partners = array_merge($partners, $this->db->getAll($query, SRO_PROSPECTORS_TYPE_ID, 1));
+			}
+			foreach ($partners as $partner) {
+				$content['partners_sro'] .= strtr($element, array(
+					'<%TITLE%>'	=> $partner['Title'],
+					'<%ALT%>'	=> htmlspecialchars($partner['Title'], ENT_QUOTES),
+					'<%IMAGE%>'	=> $partner['Image'] ?: '/assets/images/no_logo.svg',
+					'<%LINK%>'	=> '',
+				));
+			}
+			if (isset($content['partners_controls'])) {
+				$query = 'SELECT Title, Image140_90 AS Image, Link, IsControl FROM partners WHERE IsControl = 1 ORDER BY IF(`Order`,-100/`Order`,0), Title';
+				$partners = $this->db->getAll($query);
+				foreach ($partners as $partner) {
+					$content['partners_controls'] .= strtr($element, array(
+						'<%TITLE%>'	=> $partner['Title'],
+						'<%ALT%>'	=> htmlspecialchars($partner['Title'], ENT_QUOTES),
+						'<%IMAGE%>'	=> $partner['Image'],
+						'<%LINK%>'	=> $partner['Link'],
+					));
+				}
+			}
+		}
 
 		$folders = strtr($elementFolder, array(
 			'<%TITLE%>'		=> $this->blocks_info[$code]['Header'],

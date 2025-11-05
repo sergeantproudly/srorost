@@ -70,7 +70,8 @@ class ajax extends krn_abstract{
 				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
 				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
 				$adminTitle = 'Администратор';
-				$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				//$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				$adminEmail = stGetSetting('AdminEmail');
 					
 				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
@@ -129,7 +130,8 @@ class ajax extends krn_abstract{
 				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
 				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
 				$adminTitle = 'Администратор';
-				$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				//$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				$adminEmail = stGetSetting('AdminEmail');
 					
 				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
@@ -187,7 +189,8 @@ class ajax extends krn_abstract{
 				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
 				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
 				$adminTitle = 'Администратор';
-				$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				//$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				$adminEmail = stGetSetting('AdminEmail');
 					
 				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
@@ -274,7 +277,8 @@ class ajax extends krn_abstract{
 				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
 				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
 				$adminTitle = 'Администратор';
-				$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				//$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				$adminEmail = stGetSetting('AdminEmail');
 					
 				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';
@@ -337,7 +341,8 @@ class ajax extends krn_abstract{
 				$siteTitle = strtr(stGetSetting('SiteEmailTitle', $Config['Site']['Title']), array('«'=>'"','»'=>'"','—'=>'-'));
 				$siteEmail = stGetSetting('SiteEmail', $Config['Site']['Email']);
 				$adminTitle = 'Администратор';
-				$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				//$adminEmail = $this->db->getOne('SELECT Email1 FROM contacts WHERE CityId=?i OR CityId=?i', $_SESSION['ClientUser']['City']['Id'], CITY_MOSCOW_ID);
+				$adminEmail = stGetSetting('AdminEmail');
 					
 				$letter['subject'] = $form['Title'].' с сайта "'.$siteTitle.'"';
 				$letter['html'] = '<b>'.$form['Title'].'</b><br/><br/>';

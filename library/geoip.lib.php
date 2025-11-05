@@ -1,12 +1,15 @@
 <?php
 
-	define('GEOAPI_URL', 'http://api.ipstack.com/%IP%?access_key=%API_KEY%');
-	define('GEOAPI_API_KEY', '22f1e254a30de5da0370a918c72e2a6c');
+	require_once 'vendor/autoload.php';
+
+	//define('GEOAPI_URL', 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address');
+	define('GEOAPI_API_KEY', '1fddae94bffaa502c7ffbc28e5ffa738ba0aa235');
 	
 	class GeoIP {
 		
 		protected $db;
 		protected $settings;
+		protected static $tableName = 'geo_city';
 		
 		public function __construct() {
 			global $Params;
@@ -21,12 +24,25 @@
 				'%API_KEY%' => GEOAPI_API_KEY,
 			]);
 		}
+
+		public static function ProcessCityResult($city) {
+			$city = mb_strtolower($city);
+			return strtr($city, array(
+				'г ' => '',
+			));
+		}
 		
 		public function GetCityCodeByIp($ip) {
-			$url = $this->GetUrl($ip);
-			if (@$json = json_decode(file_get_contents($url), true)) {
-				return strtolower($json['city']);
-				
+			$dadata = new \Dadata\DadataClient(GEOAPI_API_KEY, null);
+			if ($result = $dadata->iplocate($ip)) {
+				if (isset($result['value'])) {
+					return self::ProcessCityResult($result['value']);
+
+				} else {
+					// город не определен
+					return false;
+				}
+
 			} else {
 				// город не определен
 				return false;
@@ -45,23 +61,27 @@
 		}
 
 		public function GetCityById($id) {
-			return $this->db->getRow('SELECT * FROM geo_city WHERE Id = ?i', $id);
+			return $this->db->getRow('SELECT * FROM ?n WHERE Id = ?i', self::$tableName, $id);
 		}
 		
 		public function GetCityByTitle($title) {
-			return $this->db->getRow('SELECT * FROM geo_city WHERE Title = ?s', $title);
+			return $this->db->getRow('SELECT * FROM ?n WHERE Title = ?s', self::$tableName, $title);
+		}
+
+		public function GetCityByName($name) {
+			return $this->db->getRow('SELECT * FROM ?n WHERE Name = ?s', self::$tableName, $name);
 		}
 
 		public function GetCityByCode($code) {
-			return $this->db->getRow('SELECT * FROM geo_city WHERE `Code` = ?s', $code);
+			return $this->db->getRow('SELECT * FROM ?n WHERE `Code` = ?s', self::$tableName, $code);
 		}
 		
 		public function DetermineClientCity() {
 			krnLoadLib('define');
 
 			$ip = $this->GetClientIp();
-			if ($city_code = $this->GetCityCodeByIp($ip)) {
-				if ($city = $this->GetCityByCode($city_code)) {
+			if (!getenv('DEV') && ($city_name = $this->GetCityCodeByIp($ip))) {
+				if ($city = $this->GetCityByName($city_name)) {
 					// город найден в базе данных
 					return $city;
 					
