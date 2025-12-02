@@ -332,9 +332,10 @@ function hideModal(sender, onlyModal) {
 	var $modal = sender ? $(sender).closest('.modal-wrapper') : $('.modal-wrapper:visible');
 	if (typeof(onlyModal) == 'undefined' || !onlyModal) {
 		$('.modal-fadeout').stop().fadeOut(300);
+		$('#layout').removeClass('js-modal-overflow').height('auto');
 		if ($('#layout').data('scrollTop')) {
 			var savedScrollTop =$('#layout').data('scrollTop');
-			$('#layout').removeClass('js-modal-overflow').height('auto').removeData('scrollTop');
+			$('#layout').removeData('scrollTop');
 			$('html,body').scrollTop(savedScrollTop);
 		}
 		$modal.stop().fadeOut(450, function() {
