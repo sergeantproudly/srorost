@@ -1238,6 +1238,13 @@ var sendSro;
 					extended[$('#bl-calculator').attr('data-base-extended-title')] = totalSum - totalSumOld;
 				}
 
+				calcSaveState(0, {
+					'totalSum': totalSum,
+					'x': x,
+					'sid': sid,
+					'extended': extended
+				});
+
 				$backBtn.click(function() {
 					var stepPrev = stepCurr - 1;
 					// check prev step for exclusion
