@@ -192,6 +192,7 @@ strong {
 	@extend .transition-all;
 	@include box-shadow(0px, 12px, 45px, rgba(252, 77, 90, 0.42));
 	@include radius(4px);
+	-webkit-tap-highlight-color: transparent;
 
 	&:hover {
 		background-color: $color-button-hover;
