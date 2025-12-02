@@ -2542,6 +2542,12 @@ header {
 					padding-bottom: 120px;
 				}
 
+				&.not-first {
+					@media (max-width: $adaptive-width-mobile) {
+						padding-bottom: 200px;
+					}
+				}
+
 				& > li {
 					display: none;
 
@@ -2726,7 +2732,12 @@ header {
 					left: 0;
 					font-size: 18px;
 
+					@media (max-width: $adaptive-width-desktop-small) {
+						display: none;
+					}
+
 					@media (max-width: $adaptive-width-tablet) {
+						display: block;
 						top: -70px;
 						left: 30px;
 					}
@@ -2768,6 +2779,41 @@ header {
 						position: static;
 						top: auto;
 						right: auto;
+					}
+
+					&.back {
+						visibility: hidden;
+						opacity: 0;
+						right: 170px;
+						@extend .transition-opacity;
+
+						@media (max-width: $adaptive-width-tablet) {
+							right: 208px;
+						}
+
+						@media (max-width: $adaptive-width-mobile) {
+							display: none;
+							margin-bottom: 10px;
+						}
+					}
+				}
+
+				&.not-first {
+
+					@media (max-width: $adaptive-width-mobile) {
+						top: -180px;
+					}
+
+					.btn {
+						&.back {
+							visibility: visible;
+							opacity: 1;
+							@extend .transition-opacity;
+
+							@media (max-width: $adaptive-width-mobile) {
+								display: block;
+							}
+						}
 					}
 				}
 			}

@@ -1124,6 +1124,36 @@ var sendSro;
 		if ($('#bl-calculator').length) {
 			var answers = {};
 			var totalSum = 0;
+			var x = 0;
+			var extended = {};
+			var sid = 0;
+			var states = {}; // массив, хранящий стейты всех переменных, используемых в клькуляторе, в конце каждого шага 
+							// ! важно отметить, что здесь должны храниться также и те переменные, которые задаются в админке в арифметических операциях шагов
+							// сейчас учитываются totalSum, x, sid, extended
+
+			function calcSaveState(step, data) {
+				states[step] = {
+					'totalSum' : data['totalSum'],
+					'x' : typeof(data['x']) != 'undefined' ? data['x'] : 0,
+					'sid' : typeof(data['sid']) != 'undefined' ? data['sid'] : 0,
+					'extended' : typeof(data['extended']) != 'undefined' ? data['extended'] : {}
+				};
+			}
+
+			function calcLoadState(step) {
+				totalSum = states[step]['totalSum'];
+				if (typeof(states[step]['x']) != 'undefined') x = states[step]['x'];
+				if (typeof(states[step]['sid']) != 'undefined') sid = states[step]['sid'];
+				if (typeof(states[step]['extended']) != 'undefined') extended = states[step]['extended'];
+			}
+
+			function calcUnsetState(step) {
+				if (typeof(states[step]) != 'undefined') {
+					delete states[step];
+					return true;
+				}
+				return false;
+			}
 
 			function calcSetStep(params) {
 				var $ul = $('#bl-calculator .wrap>.overflow .flex');
@@ -1146,11 +1176,18 @@ var sendSro;
 				initElements($variants);
 			}
 
+			function calcUnsetCurrentStep() {
+				var $ul = $('#bl-calculator .wrap>.overflow .flex');
+				$ul.children('li:first').remove();				
+			}
+
 			function calcInit(data) {
 				var $ul = $('#bl-calculator .wrap>.overflow .flex');
+				var $info = $('#bl-calculator .wrap>.overflow .info');
 				var $liFinal = $ul.children('li#calc-final');
 				var $step = $('#bl-calculator .wrap>.overflow .info>.step');
-				var $btn = $('#bl-calculator .wrap>.overflow .info>.btn');
+				var $btn = $('#bl-calculator .wrap>.overflow .info>.btn:not(.back)');
+				var $backBtn = $('#bl-calculator .wrap>.overflow .info>.btn.back');
 
 				var exclusions = new Array();
 				$.each(data, function(index, item) {
@@ -1178,9 +1215,9 @@ var sendSro;
 					totalSum = parseInt($('#bl-calculator').attr('data-base-sum'));
 				}
 
-				var x = 0;
-				var extended = {};
-				var sid = $('#bl-calculator').attr('data-type-id') ? $('#bl-calculator').attr('data-type-id') : 0;
+				x = 0; // объявление перенесено выше
+				extended = {}; // объявление перенесено выше
+				sid = $('#bl-calculator').attr('data-type-id') ? $('#bl-calculator').attr('data-type-id') : 0; // объявление перенесено выше
 
 				// если проставлена базовая операция
 				if ($('#bl-calculator').attr('data-base-operation')) {
@@ -1201,6 +1238,43 @@ var sendSro;
 					extended[$('#bl-calculator').attr('data-base-extended-title')] = totalSum - totalSumOld;
 				}
 
+				$backBtn.click(function() {
+					var stepPrev = stepCurr - 1;
+					// check prev step for exclusion
+					while (exclusions.includes(stepPrev) && stepPrev > 0) {
+						stepPrev--;
+					}
+					var stepPrev2 = stepPrev - 1;
+					// check prev step for exclusion
+					while (exclusions.includes(stepPrev2) && stepPrev2 > 0) {
+						stepPrev2--;
+					}
+					calcUnsetState(stepPrev);
+					calcLoadState(stepPrev2);
+					console.log(states);
+
+					$btn.attr('disabled', false);
+
+					$ul.children('li[data-step="' + stepCurr + '"]').stop().fadeOut(__animationSpeed, function() {
+						$ul.children('li[data-step="' + stepPrev + '"]').stop().fadeIn(__animationSpeed, function () {
+							calcUnsetCurrentStep();
+						});
+					});
+
+					stepCurr = stepPrev;
+					var realStepCurr = stepCurr + exclusions.length;
+
+					// показываем/скрываем кнопку Назад
+					if (realStepCurr > 1) {
+						$ul.addClass('not-first');
+						$info.addClass('not-first');
+					} else {
+						$ul.removeClass('not-first');
+						$info.removeClass('not-first');
+					}
+					$step.text((typeof(realStepCurr) != 'undefined' ? realStepCurr : '0') + ' из ' + realStepsTotal);
+				});
+
 				$btn.click(function() {
 					if (typeof(answers[$ul.children('li[data-step='+stepCurr+']').attr('data-id')]) != 'undefined') {
 						var $radio = $ul.find('li[data-step='+stepCurr+'] input:radio:checked');
@@ -1219,6 +1293,14 @@ var sendSro;
 							// фиксируем наименование доп услуги
 							extended[$radio.attr('data-extended-title')] = totalSum - totalSumOld;
 						}
+
+						calcSaveState(stepCurr, {
+							'totalSum': totalSum,
+							'x': x,
+							'sid': sid,
+							'extended': extended
+						});
+						console.log(states);
 
 						var stepNext = stepCurr - 0 + 1;
 						// check next step for exclusion
@@ -1246,12 +1328,21 @@ var sendSro;
 							stepCurr = stepNext;
 							var realStepCurr = stepCurr - exclusions.length;
 
+							// показываем/скрываем кнопку Назад
+							if (realStepCurr > 1) {
+								$ul.addClass('not-first');
+								$info.addClass('not-first');
+							} else {
+								$ul.removeClass('not-first');
+								$info.removeClass('not-first');
+							}
 							$step.text((typeof(realStepCurr) != 'undefined' ? realStepCurr : '0') + ' из ' + realStepsTotal);
 
 						// final step
 						} else {
 							$step.stop().fadeOut(__animationSpeed);
 							$btn.stop().fadeOut(__animationSpeed);
+							$backBtn.stop().fadeOut(__animationSpeed);
 
 							$ul.children('li[data-step="' + stepCurr + '"]').stop().fadeOut(__animationSpeed, function() {
 								$('#calc-final-sum').text(totalSum.toLocaleString('ru') + ' рублей');
