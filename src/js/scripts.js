@@ -1179,7 +1179,7 @@ var sendSro;
 
 			function calcUnsetCurrentStep() {
 				var $ul = $('#bl-calculator .wrap>.overflow .flex');
-				$ul.children('li:first').remove();				
+				$ul.children('li:first').remove();		
 			}
 
 			function calcInit(data) {
@@ -1247,6 +1247,8 @@ var sendSro;
 				});
 
 				$backBtn.click(function() {
+					$(this).attr('disabled', true);
+
 					var stepPrev = stepCurr - 1;
 					// check prev step for exclusion
 					while (exclusions.includes(stepPrev) && stepPrev > 0) {
@@ -1266,6 +1268,7 @@ var sendSro;
 					$ul.children('li[data-step="' + stepCurr + '"]').stop().fadeOut(__animationSpeed, function() {
 						$ul.children('li[data-step="' + stepPrev + '"]').stop().fadeIn(__animationSpeed, function () {
 							calcUnsetCurrentStep();
+							$backBtn.attr('disabled', false);
 						});
 					});
 

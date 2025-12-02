@@ -272,6 +272,24 @@ strong {
 			border-color: color.adjust(#e0e0e0, $lightness: -25%);
 			color: color.adjust(#454545, $lightness: -25%);
 		}
+
+		&[disabled] {
+			background-color: transparent;
+			color: #777;
+			border: 1px solid #e0e0e0;
+
+			&:hover {
+				background-color: transparent;
+				color: #777;
+				border: 1px solid #e0e0e0;
+			}
+
+			&:active {
+				background-color: transparent;
+				color: #777;
+				border: 1px solid #e0e0e0;
+			}
+		}
 	}
 }
 .dashed {
