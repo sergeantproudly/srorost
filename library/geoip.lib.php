@@ -34,6 +34,9 @@
 		
 		public function GetCityCodeByIp($ip) {
 			$dadata = new \Dadata\DadataClient(GEOAPI_API_KEY, null);
+			// временная мера, чтобы не вываливалась fatal ошибка
+			return false;
+
 			if ($result = $dadata->iplocate($ip)) {
 				if (isset($result['value'])) {
 					return self::ProcessCityResult($result['value']);
