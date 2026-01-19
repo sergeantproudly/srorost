@@ -9623,3 +9623,16 @@ footer {
 		}
 	}
 }
+.tags {
+	display: inline-table;
+	padding: 5px 10px;
+	margin: 0px 10px 10px 0px;
+	border: 1px solid #bfc0c5;
+	border-radius: 5px;
+	color: #303C48;
+	font-size: 16px;
+
+	&:hover {
+		color: #0F62CA;
+	}
+} 
